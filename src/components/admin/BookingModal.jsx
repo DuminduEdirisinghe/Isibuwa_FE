@@ -68,7 +68,8 @@ export function BookingModal({ booking: initialBooking, isOpen, onClose, onAppro
 
   const slipUrl = booking.signed_slip_url || booking.payment_slip_url
   const isPdf = slipUrl?.toLowerCase().includes('.pdf') ||
-                slipUrl?.includes('resource_type=raw') ||
+                slipUrl?.includes('/raw/upload/') ||
+                booking.payment_slip_url?.toLowerCase().includes('/raw/upload/') ||
                 booking.payment_slip_url?.toLowerCase().endsWith('.pdf')
 
   return (
@@ -107,38 +108,16 @@ export function BookingModal({ booking: initialBooking, isOpen, onClose, onAppro
 
         {/* ── Ticket code (if approved) ─────────────────────── */}
         {booking.status === 'approved' && booking.ticket_code && (
-          <div className="rounded-xl bg-gradient-to-r from-primary-600/30 to-purple-600/30 border border-primary-500/40 p-5 text-center flex flex-col items-center justify-center gap-4">
-            <div>
-              <p className="text-xs text-white/50 uppercase tracking-widest mb-2">Ticket Code</p>
-              <p className="text-3xl font-black tracking-widest text-white font-mono">
-                {booking.ticket_code}
-              </p>
-              {booking.issued_at && (
-                <p className="text-xs text-white/30 mt-2">
-                  Issued {new Date(booking.issued_at).toLocaleDateString()}
-                </p>
-              )}
-            </div>
-            {/* QR Code display */}
-            <div className="bg-white p-3 rounded-xl shadow-lg border border-white/20">
-              <img
-                src={`https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(
-                  JSON.stringify({
-                    ticket_code: booking.ticket_code,
-                    name: booking.name,
-                    email: booking.email,
-                    phone: booking.phone || 'N/A',
-                    district: booking.district || 'N/A',
-                    event: 'Isibuwa Festival 2026'
-                  })
-                )}`}
-                alt="Ticket QR Code"
-                className="w-36 h-36"
-              />
-            </div>
-            <p className="text-xs text-white/40 max-w-[250px] leading-relaxed">
-              Admins can scan this QR code at the gate to retrieve and verify details against the database.
+          <div className="rounded-xl bg-gradient-to-r from-primary-600/30 to-purple-600/30 border border-primary-500/40 p-5 text-center">
+            <p className="text-xs text-white/50 uppercase tracking-widest mb-2">Ticket Code</p>
+            <p className="text-2xl font-black tracking-widest text-white font-mono">
+              {booking.ticket_code}
             </p>
+            {booking.issued_at && (
+              <p className="text-xs text-white/30 mt-2">
+                Issued {new Date(booking.issued_at).toLocaleDateString()}
+              </p>
+            )}
           </div>
         )}
 
