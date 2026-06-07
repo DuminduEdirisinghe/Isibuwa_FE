@@ -206,77 +206,75 @@ export default function LandingPage() {
         </div>
       </header>
 
-      {/* ── Hero & Event Card Section ─────────────────────────── */}
-      <section className="relative pt-32 pb-24 px-6 md:px-12 flex flex-col justify-center min-h-[90vh] overflow-hidden border-b border-[#2a2533]/20">
-        <div
-          className="absolute inset-0 bg-cover bg-center opacity-[0.12] pointer-events-none filter grayscale mix-blend-lighten"
-          style={{ backgroundImage: `url(${heroBg})` }}
-        />
-        <div className="absolute -top-[400px] left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-primary-500/5 rounded-full blur-[160px] pointer-events-none" />
+      {/* ── Hero Section (Redesigned for Sinhala Logo) ─────────────────── */}
+      <section className="relative pt-28 pb-16 px-6 md:px-12 flex flex-col items-center bg-[#0b090e] border-b border-[#2a2533]/20">
+        {/* Glow accent */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-primary-500/5 rounded-full blur-[120px] pointer-events-none" />
 
-        <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 relative z-10 items-center">
-          {/* Editorial Headline */}
-          <div className="lg:col-span-7 flex flex-col items-start text-left">
-            <div className="mb-4">
-              {getAvailabilityBadge(remaining)}
-            </div>
-            <h1 className="font-display text-6xl sm:text-7xl md:text-8xl lg:text-9xl text-white font-light italic leading-none mb-6">
-              The 2026 Gathering
-            </h1>
-            <p className="text-white/60 text-base md:text-lg leading-relaxed max-w-xl font-light">
-              Join us for an unforgettable night of raw, live, and pure musical expression. Isibuwa Festival returns to the misty hills of Deraniyagala, bringing together traditional rhythms and contemporary fusion beats under the canopy of night.
-            </p>
-            <div className="flex gap-4 mt-8">
-              <button
-                onClick={scrollToBooking}
-                className="px-6 py-4 text-xs font-bold uppercase tracking-widest bg-primary-500 hover:bg-accent-500 text-dark-950 active:scale-[0.98] transition-all rounded-none glow-primary"
-              >
-                Secure Booking
-              </button>
-              <button
-                onClick={() => document.getElementById('lineup')?.scrollIntoView({ behavior: 'smooth' })}
-                className="px-6 py-4 text-xs font-bold uppercase tracking-widest border border-white/10 hover:border-white/20 bg-white/5 hover:bg-white/8 text-white active:scale-[0.98] transition-all rounded-none"
-              >
-                Explore Lineup
-              </button>
-            </div>
+        <div className="max-w-5xl mx-auto w-full flex flex-col items-center">
+          {/* Main Visual Poster (No overlays, logo fully clear) */}
+          <div className="w-full max-w-4xl overflow-hidden mb-12 border border-[#2a2533]/45 bg-black">
+            <img
+              src={heroBg}
+              alt="ඉසිඹුව '26"
+              className="w-full h-auto max-h-[60vh] md:max-h-[70vh] object-contain select-none pointer-events-none animate-fade-in"
+            />
           </div>
 
-          {/* Luxury Concert Pass (Card Detail) */}
-          <div className="lg:col-span-5 flex justify-center">
-            <div className="w-full max-w-md bg-[#131118] border border-primary-500/20 p-8 relative overflow-hidden group hover:border-primary-500/35 transition-all duration-300">
-              {/* Gold border decorative accents */}
+          {/* Details & Actions Grid (Positioned neatly below) */}
+          <div className="w-full grid grid-cols-1 md:grid-cols-12 gap-8 items-start text-left mt-4">
+            
+            {/* Description & CTA */}
+            <div className="md:col-span-7 flex flex-col items-start">
+              <div className="mb-4">
+                {getAvailabilityBadge(remaining)}
+              </div>
+              <p className="text-white/60 text-sm md:text-base leading-relaxed max-w-xl font-light">
+                Isibuwa Festival returns for its 2026 edition in the serene wilderness of Deraniyagala. Experience an evening dedicated to authentic musical artistry, bringing together classical melodies, vocal performances, and deep instrumental fusion under the stars.
+              </p>
+              <div className="flex gap-4 mt-8 w-full sm:w-auto">
+                <button
+                  onClick={scrollToBooking}
+                  className="flex-1 sm:flex-none px-6 py-3.5 text-xs font-bold uppercase tracking-widest bg-primary-500 hover:bg-accent-500 text-dark-950 active:scale-[0.98] transition-all rounded-none glow-primary"
+                >
+                  Secure Ticket
+                </button>
+                <button
+                  onClick={() => document.getElementById('lineup')?.scrollIntoView({ behavior: 'smooth' })}
+                  className="flex-1 sm:flex-none px-6 py-3.5 text-xs font-bold uppercase tracking-widest border border-white/10 hover:border-white/20 bg-white/5 hover:bg-white/8 text-white active:scale-[0.98] transition-all rounded-none"
+                >
+                  Lineup
+                </button>
+              </div>
+            </div>
+
+            {/* Concert Details Pass Card */}
+            <div className="md:col-span-5 bg-[#131118] border border-primary-500/15 p-6 relative overflow-hidden group hover:border-primary-500/30 transition-all duration-300">
               <div className="absolute top-0 left-0 w-2 h-[1px] bg-primary-500" />
               <div className="absolute top-0 left-0 w-[1px] h-2 bg-primary-500" />
               <div className="absolute bottom-0 right-0 w-2 h-[1px] bg-primary-500" />
               <div className="absolute bottom-0 right-0 w-[1px] h-2 bg-primary-500" />
-              
-              <div className="flex justify-between items-start border-b border-[#2a2533] pb-6 mb-6">
+
+              <div className="flex justify-between items-start border-b border-[#2a2533] pb-4 mb-4">
                 <div>
-                  <p className="text-[10px] tracking-widest text-primary-400 font-semibold font-mono uppercase">Featured Event</p>
-                  <h3 className="font-display text-2xl font-bold text-white mt-1">Isibuwa Festival 2026</h3>
+                  <p className="text-[9px] tracking-widest text-primary-400 font-semibold font-mono uppercase">Gate Pass</p>
+                  <h3 className="font-display text-lg font-bold text-white mt-0.5">Isibuwa Festival '26</h3>
                 </div>
                 <div className="text-right">
-                  <p className="text-[10px] tracking-widest text-white/40 font-mono uppercase">Ticket Price</p>
-                  <p className="text-xl font-bold text-primary-400 mt-1">LKR 500</p>
+                  <p className="text-[9px] tracking-widest text-white/40 font-mono uppercase">Price</p>
+                  <p className="text-base font-bold text-primary-400 mt-0.5">LKR 500</p>
                 </div>
               </div>
 
-              <div className="space-y-4">
+              <div className="space-y-3 text-xs font-light">
                 <div>
-                  <p className="text-[10px] tracking-widest text-white/30 font-mono uppercase">Date & Hours</p>
-                  <p className="text-white/80 font-medium text-sm mt-0.5">{formattedDate}</p>
-                  <p className="text-white/50 text-xs mt-0.5">Gates Open at {formattedTime}</p>
+                  <p className="text-[9px] tracking-widest text-white/30 font-mono uppercase">Schedule</p>
+                  <p className="text-white/80 font-medium mt-0.5">{formattedDate}</p>
+                  <p className="text-white/40 text-[10px] mt-0.5">Doors open at {formattedTime}</p>
                 </div>
-
                 <div>
-                  <p className="text-[10px] tracking-widest text-white/30 font-mono uppercase">Venue Coordinates</p>
-                  <p className="text-white/80 font-medium text-sm mt-0.5">{event?.venue || 'Deraniyagala, Kegalle'}</p>
-                </div>
-
-                <div className="border-t border-dashed border-[#2a2533] pt-4 flex justify-between items-center text-xs text-white/40">
-                  <span>Admit One · Standard Pass</span>
-                  <span className="font-mono text-primary-500/60 font-semibold">№ {remaining} left</span>
+                  <p className="text-[9px] tracking-widest text-white/30 font-mono uppercase">Venue Coordinates</p>
+                  <p className="text-white/80 font-medium mt-0.5">{event?.venue || 'Deraniyagala, Kegalle'}</p>
                 </div>
               </div>
             </div>
