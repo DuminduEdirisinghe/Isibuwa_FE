@@ -85,12 +85,12 @@ export function Modal({ isOpen, onClose, title, children, size = 'md' }) {
           'bg-dark-700 border border-white/10',
           'shadow-2xl shadow-black/50',
           'animate-slide-up',
-          'max-h-[90vh] overflow-y-auto',
+          'max-h-[90vh] flex flex-col',
           sizeClasses[size] || sizeClasses.md,
         ].join(' ')}
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-5 border-b border-white/10">
+        <div className="flex items-center justify-between px-6 py-5 border-b border-white/10 flex-shrink-0">
           <h2 id="modal-title" className="text-xl font-bold text-white">
             {title}
           </h2>
@@ -106,7 +106,7 @@ export function Modal({ isOpen, onClose, title, children, size = 'md' }) {
         </div>
 
         {/* Content */}
-        <div className="px-6 py-6">
+        <div className="px-6 py-6 flex-1 overflow-y-auto">
           {children}
         </div>
       </div>

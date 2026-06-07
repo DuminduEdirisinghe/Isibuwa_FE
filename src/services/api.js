@@ -82,6 +82,9 @@ export const approveBooking = (id) => api.patch(`/api/admin/bookings/${id}/appro
 /** @param {number} id */
 export const rejectBooking = (id) => api.patch(`/api/admin/bookings/${id}/reject`)
 
+/** @param {number} id */
+export const checkinBooking = (id) => api.patch(`/api/admin/bookings/${id}/checkin`)
+
 /** Fetch admin dashboard stats */
 export const getStats = () => api.get('/api/admin/stats')
 

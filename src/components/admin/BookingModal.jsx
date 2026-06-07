@@ -1,6 +1,6 @@
 /**
  * components/admin/BookingModal.jsx
- * Full booking detail modal with approve/reject actions and confirmation dialogs.
+ * Full booking detail modal with approve/reject/checkin actions and confirmation dialogs.
  */
 
 import { useState, useEffect, useCallback } from 'react'
@@ -9,10 +9,10 @@ import { Badge } from '../ui/Badge'
 import { Button } from '../ui/Button'
 import { getBooking } from '../../services/api'
 
-export function BookingModal({ booking: initialBooking, isOpen, onClose, onApprove, onReject }) {
+export function BookingModal({ booking: initialBooking, isOpen, onClose, onApprove, onReject, onCheckin }) {
   const [booking,        setBooking]        = useState(initialBooking)
   const [isLoading,      setIsLoading]      = useState(false)
-  const [confirmAction,  setConfirmAction]  = useState(null) // 'approve' | 'reject' | null
+  const [confirmAction,  setConfirmAction]  = useState(null) // 'approve' | 'reject' | 'checkin' | null
   const [actionLoading,  setActionLoading]  = useState(false)
   const [actionError,    setActionError]    = useState(null)
 
@@ -66,11 +66,28 @@ export function BookingModal({ booking: initialBooking, isOpen, onClose, onAppro
     }
   }
 
+  const handleCheckin = async () => {
+    setActionLoading(true)
+    setActionError(null)
+    try {
+      await onCheckin(booking.id)
+      // Update local state so UI reflects check-in immediately
+      setBooking(prev => ({ ...prev, checked_in_at: new Date().toISOString() }))
+    } catch (err) {
+      setActionError(err.response?.data?.error || 'Failed to check in')
+    } finally {
+      setActionLoading(false)
+      setConfirmAction(null)
+    }
+  }
+
   const slipUrl = booking.signed_slip_url || booking.payment_slip_url
   const isPdf = slipUrl?.toLowerCase().includes('.pdf') ||
                 slipUrl?.includes('/raw/upload/') ||
                 booking.payment_slip_url?.toLowerCase().includes('/raw/upload/') ||
                 booking.payment_slip_url?.toLowerCase().endsWith('.pdf')
+
+  const isCheckedIn = !!booking.checked_in_at
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title={`Booking #${booking.id}`} size="md">
@@ -78,7 +95,14 @@ export function BookingModal({ booking: initialBooking, isOpen, onClose, onAppro
 
         {/* ── Status badge ─────────────────────────────────── */}
         <div className="flex items-center justify-between">
-          <Badge status={booking.status} />
+          <div className="flex items-center gap-2">
+            <Badge status={booking.status} />
+            {isCheckedIn && (
+              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                ✓ Checked In
+              </span>
+            )}
+          </div>
           <span className="text-xs text-white/30">
             Submitted {new Date(booking.submitted_at).toLocaleDateString('en-US', {
               month: 'long', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit',
@@ -98,6 +122,12 @@ export function BookingModal({ booking: initialBooking, isOpen, onClose, onAppro
               label: 'Reviewed',
               value: new Date(booking.reviewed_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
             } : null,
+            booking.checked_in_at ? {
+              label: 'Checked In At',
+              value: new Date(booking.checked_in_at).toLocaleDateString('en-US', {
+                month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit',
+              }),
+            } : null,
           ].filter(Boolean).map((field) => (
             <div key={field.label}>
               <p className="text-xs text-white/40 uppercase tracking-wider mb-1">{field.label}</p>
@@ -108,7 +138,11 @@ export function BookingModal({ booking: initialBooking, isOpen, onClose, onAppro
 
         {/* ── Ticket code (if approved) ─────────────────────── */}
         {booking.status === 'approved' && booking.ticket_code && (
-          <div className="rounded-xl bg-gradient-to-r from-primary-600/30 to-purple-600/30 border border-primary-500/40 p-5 text-center">
+          <div className={`rounded-xl border p-5 text-center ${
+            isCheckedIn
+              ? 'bg-gradient-to-r from-emerald-600/20 to-teal-600/20 border-emerald-500/40'
+              : 'bg-gradient-to-r from-primary-600/30 to-purple-600/30 border-primary-500/40'
+          }`}>
             <p className="text-xs text-white/50 uppercase tracking-widest mb-2">Ticket Code</p>
             <p className="text-2xl font-black tracking-widest text-white font-mono">
               {booking.ticket_code}
@@ -118,6 +152,77 @@ export function BookingModal({ booking: initialBooking, isOpen, onClose, onAppro
                 Issued {new Date(booking.issued_at).toLocaleDateString()}
               </p>
             )}
+            {isCheckedIn && (
+              <p className="text-xs text-emerald-400 mt-2 font-semibold">
+                ✓ Checked in at {new Date(booking.checked_in_at).toLocaleTimeString('en-US', {
+                  hour: '2-digit', minute: '2-digit',
+                })}
+              </p>
+            )}
+          </div>
+        )}
+
+        {/* ── Check-In button (only for approved, not yet checked in) ─── */}
+        {booking.status === 'approved' && booking.ticket_code && !isCheckedIn && (
+          <>
+            {confirmAction === 'checkin' ? (
+              <div className="glass rounded-xl p-4 flex flex-col gap-3">
+                <p className="text-white/80 text-sm text-center font-medium">
+                  🎫 Confirm check-in for <strong>{booking.name}</strong>?<br/>
+                  <span className="text-white/50">This action cannot be undone.</span>
+                </p>
+                <div className="flex gap-3">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="flex-1"
+                    onClick={() => setConfirmAction(null)}
+                    disabled={actionLoading}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    variant="success"
+                    size="sm"
+                    className="flex-1"
+                    loading={actionLoading}
+                    onClick={handleCheckin}
+                    id={`confirm-checkin-${booking.id}`}
+                  >
+                    ✓ Yes, Check In
+                  </Button>
+                </div>
+              </div>
+            ) : (
+              <Button
+                variant="success"
+                size="md"
+                className="w-full"
+                onClick={() => setConfirmAction('checkin')}
+                id={`checkin-btn-${booking.id}`}
+              >
+                🎫 Check In at Gate
+              </Button>
+            )}
+          </>
+        )}
+
+        {/* ── Already checked in indicator ──────────────────── */}
+        {booking.status === 'approved' && isCheckedIn && (
+          <div className="flex items-center gap-3 p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30">
+            <div className="w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center flex-shrink-0">
+              <svg className="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <div>
+              <p className="text-sm font-medium text-emerald-400">Already Checked In</p>
+              <p className="text-xs text-white/40">
+                {new Date(booking.checked_in_at).toLocaleDateString('en-US', {
+                  month: 'long', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit',
+                })}
+              </p>
+            </div>
           </div>
         )}
 
@@ -187,7 +292,7 @@ export function BookingModal({ booking: initialBooking, isOpen, onClose, onAppro
         {/* ── Actions (only for pending) ────────────────────── */}
         {booking.status === 'pending' && (
           <>
-            {confirmAction ? (
+            {confirmAction && confirmAction !== 'checkin' ? (
               <div className="glass rounded-xl p-4 flex flex-col gap-3">
                 <p className="text-white/80 text-sm text-center font-medium">
                   {confirmAction === 'approve'
@@ -216,7 +321,7 @@ export function BookingModal({ booking: initialBooking, isOpen, onClose, onAppro
                   </Button>
                 </div>
               </div>
-            ) : (
+            ) : !confirmAction ? (
               <div className="flex gap-3">
                 <Button
                   variant="danger"
@@ -237,7 +342,7 @@ export function BookingModal({ booking: initialBooking, isOpen, onClose, onAppro
                   ✓ Approve
                 </Button>
               </div>
-            )}
+            ) : null}
           </>
         )}
       </div>

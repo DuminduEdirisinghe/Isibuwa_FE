@@ -101,6 +101,7 @@ function StatsView() {
     { label: 'Pending Review',     value: stats?.pending,            icon: '⏳',  colorClass: 'text-amber-400',        bgClass: 'bg-amber-500/20' },
     { label: 'Approved',           value: stats?.approved,           icon: '✅',  colorClass: 'text-emerald-400',      bgClass: 'bg-emerald-500/20' },
     { label: 'Rejected',           value: stats?.rejected,           icon: '❌',  colorClass: 'text-red-400',          bgClass: 'bg-red-500/20' },
+    { label: 'Checked In',         value: stats?.checked_in,         icon: '🎫',  colorClass: 'text-cyan-400',         bgClass: 'bg-cyan-500/20' },
     { label: 'Remaining Capacity', value: stats?.remaining_capacity, icon: '💺',  colorClass: 'text-primary-400',      bgClass: 'bg-primary-500/20' },
   ]
 
@@ -119,7 +120,7 @@ function StatsView() {
         </Button>
       </div>
 
-      <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
         {cards.map((card) => (
           <StatsCard
             key={card.label}
@@ -166,7 +167,7 @@ function BookingsView() {
     bookings, total, page, totalPages, limit,
     search, statusFilter, isLoading,
     setPage, setSearch, setStatusFilter,
-    handleApprove, handleReject,
+    handleApprove, handleReject, handleCheckin,
   } = useBookings()
 
   return (
@@ -198,6 +199,7 @@ function BookingsView() {
           onClose={() => setSelectedBooking(null)}
           onApprove={handleApprove}
           onReject={handleReject}
+          onCheckin={handleCheckin}
         />
       )}
     </div>
