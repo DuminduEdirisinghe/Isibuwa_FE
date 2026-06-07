@@ -140,3 +140,195 @@
     text-wrap: balance;
   }
 }
+
+/* RESPONSIVE FIXES — mobile & tablet */
+
+/* Tablet breakpoint: ≤768px */
+@media (max-width: 768px) {
+  /* BUG 2: Sasnaka Sansada logo appearing twice. Hide the duplicate outside element. */
+  .logo-outside-hero {
+    display: none !important;
+  }
+
+  /* BUG 1: Hero image container styles on tablet/mobile. */
+  .hero-section {
+    width: 100% !important;
+    min-height: 60vw !important;
+    max-height: 90vh !important;
+    background-size: cover !important;
+    background-position: center center !important;
+    background-repeat: no-repeat !important;
+    height: auto !important; /* ensure no fixed pixel height */
+  }
+
+  /* BUG 3: Hero card full-width/bleed on tablet/mobile. */
+  .hero-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    border-radius: 0 !important;
+  }
+
+  /* BUG 4: Navigation bar simplified layout on small screens. */
+  .nav-meta {
+    display: none !important;
+  }
+  .nav-container {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+  }
+  .nav-btn {
+    min-height: 44px !important;
+    padding: 0 20px !important;
+    font-size: 13px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  /* BUG 5: Registration page columns stack vertically. */
+  .registration-container,
+  .registration-layout {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 2rem !important;
+    padding: 1.5rem 1rem !important;
+  }
+  .registration-left,
+  .registration-right {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}
+
+/* Mobile breakpoint: ≤480px */
+@media (max-width: 480px) {
+  /* BUG 1: Hero container min-height scales with content. */
+  .hero-section {
+    min-height: 56vw !important;
+    max-height: none !important; /* allow content to push height taller */
+  }
+
+  /* BUG 6: Touch targets 44px+ minimum on mobile. */
+  .hero-cta-btn {
+    min-height: 48px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+  }
+  
+  .form-submit-btn {
+    min-height: 52px !important;
+    width: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .form-input-field {
+    min-height: 48px !important;
+  }
+
+  .file-upload-zone {
+    min-height: 100px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  /* ADDITIONAL SMALL-SCREEN POLISH */
+  .hero-desc {
+    font-size: 14px !important;
+    line-height: 1.7 !important;
+  }
+
+  .avail-badge {
+    font-size: 11px !important;
+    padding: 4px 10px !important;
+  }
+
+  /* Secure Ticket and Lineup buttons: full-width stacked column */
+  .hero-btn-group {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+    width: 100% !important;
+  }
+
+  /* Re-ordering elements in hero so Gate Pass info card is below description text but above buttons */
+  .hero-grid-container {
+    display: flex !important;
+    flex-direction: column !important;
+  }
+  .hero-left-column {
+    display: contents !important;
+  }
+  .hero-right-column {
+    display: contents !important;
+  }
+  .hero-badge-wrapper {
+    order: 1 !important;
+  }
+  .hero-desc {
+    order: 2 !important;
+  }
+  .gate-pass-card {
+    order: 3 !important;
+    position: static !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-top: 1.5rem !important;
+    margin-bottom: 1.5rem !important;
+  }
+  .hero-btn-group {
+    order: 4 !important;
+  }
+
+  /* Order summary card adjustments */
+  .order-summary-card {
+    padding: 1rem !important;
+    font-size: 13px !important;
+  }
+
+  /* Claim Your Passage heading size scaling */
+  .claim-passage-heading {
+    font-size: clamp(24px, 6vw, 42px) !important;
+  }
+
+  /* Form labels font size */
+  .form-label {
+    font-size: 12px !important;
+  }
+
+  /* Section padding reduced to 1rem 1rem on mobile */
+  .section-padding {
+    padding: 1rem 1rem !important;
+  }
+}
+
+/* Desktop background forest image blur and styling */
+@media (min-width: 769px) {
+  .logo-outside-hero {
+    filter: blur(6px) !important;
+    transform: scale(1.04) !important;
+    opacity: 0.45 !important;
+  }
+}
+
+@keyframes stamp {
+  from { transform: scale(1.15); opacity: 0; }
+  to   { transform: scale(1);    opacity: 1; }
+}
+
+.section-padding { 
+  opacity: 0; 
+  transform: translateY(16px); 
+  transition: opacity 0.5s ease, transform 0.5s ease; 
+}
+.section-padding.visible { 
+  opacity: 1; 
+  transform: translateY(0); 
+}
