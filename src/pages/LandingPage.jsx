@@ -97,7 +97,7 @@ const INSTRUMENTALISTS_LIST = [
     name: 'Malshan Ranawella',
     genre: 'Violinist',
     image: 'Artisit11.jpg',
-    district: 'Badulla',
+    district: 'Colombo',
     bio: 'A veteran violinist delivering intricate solos that weave between classical and experimental soundscapes.'
   },
   {
