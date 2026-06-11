@@ -60,138 +60,7 @@ const artistImages = {
   'Reviewer5.jpg': reviewer5,
 }
 
-const MODERATOR_LIST = [
-  {
-    name: 'Chamindu Gamage',
-    genre: 'Master of Ceremonies',
-    image: 'Moderor.jpg',
-    district: 'Kegalle',
-    bio: 'An elegant presenter and seasoned host, guiding the festival through smooth transitions and immersive storytelling.'
-  }
-]
 
-const REVIEWERS_LIST = [
-  {
-    name: 'Chamuditha Galkaduwa',
-    genre: 'Reviewer',
-    image: 'Reviewer1.jpg',
-    district: 'Colombo',
-    bio: 'A distinguished cultural critic and connoisseur of classical Sri Lankan music and performing arts.'
-  },
-  {
-    name: 'Ulindu Pasandul Lenaduwa Lokuge',
-    genre: 'Reviewer',
-    image: 'Reviewer2.jpg',
-    district: 'Kandy',
-    bio: 'An esteemed judge renowned for her deep appreciation of vocal artistry and ensemble performance.'
-  },
-  {
-    name: 'Dunya Kodithuwakki',
-    genre: 'Reviewer',
-    image: 'Reviewer3.jpg',
-    district: 'Galle',
-    bio: 'A celebrated musicologist specialising in South Asian classical traditions and fusion genres.'
-  },
-  {
-    name: 'W.A.Vijini Thisarani',
-    genre: 'Reviewer',
-    image: 'Reviewer4.jpg',
-    district: 'Rathnapura',
-    bio: 'A seasoned panel member with decades of experience evaluating orchestral and folk performances.'
-  },
-  {
-    name: 'W.Navodi Vindhya Waduge',
-    genre: 'Reviewer',
-    image: 'Reviewer5.jpg',
-    district: 'Kegalle',
-    bio: 'A passionate advocate for preserving traditional Sri Lankan instruments and indigenous musical forms.'
-  }
-]
-
-const VOCALISTS_LIST = [
-  {
-    name: 'Sasanda Sankalana',
-    genre: 'Vocalist',
-    image: 'Artisit6.jpg',
-    district: 'Kandy',
-    bio: 'A legendary vocal artist, celebrated for his profound classical roots and expressive, soul-stirring melodies.'
-  },
-  {
-    name: 'Devindi Rajapaksha',
-    genre: 'Vocalist',
-    image: 'Artisit8.jpg',
-    district: 'Kegalle',
-    bio: 'An avant-garde composer and singer, blending deep acoustic textures with traditional Sri Lankan folk music.'
-  },
-  {
-    name: 'Hashara Sandamini',
-    genre: 'Vocalist',
-    image: 'Artisit9.jpg',
-    district: 'Rathnapura',
-    bio: 'A powerhouse vocalist whose versatility spans classical opera to high-energy contemporary fusion.'
-  },
-  {
-    name: 'Buddhima Prasad Priyanath',
-    genre: 'Vocalist',
-    image: 'Artisit5.jpg',
-    district: 'Rathnapura',
-    bio: 'A rhythm specialist whose rapid-fire classical beats define the tempo of the performance.'
-  }
-
-]
-
-const INSTRUMENTALISTS_LIST = [
-  {
-    name: 'Malshan Ranawella',
-    genre: 'Violinist',
-    image: 'Artisit11.jpg',
-    district: 'Badulla',
-    bio: 'A veteran violinist delivering intricate solos that weave between classical and experimental soundscapes.'
-  },
-  {
-    name: 'Punsarani Anodya',
-    genre: 'Violinist',
-    image: 'Artisit1.jpeg',
-    district: 'Colombo',
-    bio: 'Renowned for his precise, classical techniques and contribution to local orchestral fusion projects.'
-  },
-  {
-    name: 'Methnal Liyanage',
-    genre: 'Flutist',
-    image: 'Artisit2.jpeg',
-    district: 'Galle',
-    bio: 'Captivating listeners with serene traditional ragas and innovative classica'
-  },
-  {
-    name: 'Ravindu Dileepa',
-    genre: 'Lead Guitarist',
-    image: 'Artisit3.jpeg',
-    district: 'Rathnapura',
-    bio: 'A dynamic percussionist specializing in traditional Sri Lankan low-country and up-country drumming.'
-  },
-  {
-    name: 'Rasindu Karunathilaka',
-    genre: 'Lead Guitarist',
-    image: 'Artisit4.jpeg',
-    district: 'Rathnapura',
-    bio: 'Crafting atmospheric soundscapes using classical wooden flutes and modern wind fusion styles.'
-  },
-
-  {
-    name: 'Minhaj Ali',
-    genre: 'Keyboards',
-    image: 'Artisit10.jpg',
-    district: 'Colombo',
-    bio: 'Blending modern synthesizers with classical compositions to create cinematic instrumental layers.'
-  },
-  {
-    name: 'Nimsara Nimesh',
-    genre: 'Percussionist',
-    image: 'Artisit12.jpg',
-    district: 'Colombo',
-    bio: 'Providing warm, resonant low-end support that serves as the foundation for the entire ensemble.'
-  }
-]
 
 const SRI_LANKAN_DISTRICTS = [
   'Ampara', 'Anuradhapura', 'Badulla', 'Batticaloa', 'Colombo', 'Galle', 'Gampaha',
@@ -858,7 +727,7 @@ export default function LandingPage() {
               Festival Host & Moderator
             </h3>
             <div className="flex justify-center">
-              {MODERATOR_LIST.map((artist, idx) => (
+              {(event?.moderators || []).map((artist, idx) => (
                 <div
                   key={idx}
                   className="w-full max-w-[260px] group relative bg-[var(--surface-3)] border border-[var(--surface-border)] p-4 transition-all duration-300 hover:border-[var(--gold-primary)]/35 flex flex-col justify-between overflow-hidden
@@ -908,7 +777,7 @@ export default function LandingPage() {
               className="flex flex-row gap-5 overflow-x-auto pb-4"
               style={{ WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none', msOverflowStyle: 'none' }}
             >
-              {VOCALISTS_LIST.map((artist, idx) => (
+              {(event?.vocalists || []).map((artist, idx) => (
                 <div
                   key={idx}
                   style={{ minWidth: '260px', maxWidth: '260px', flexShrink: 0 }}
@@ -958,7 +827,7 @@ export default function LandingPage() {
               className="flex flex-row gap-5 overflow-x-auto pb-4"
               style={{ WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none', msOverflowStyle: 'none' }}
             >
-              {INSTRUMENTALISTS_LIST.map((artist, idx) => (
+              {(event?.instrumentalists || []).map((artist, idx) => (
                 <div
                   key={idx}
                   style={{ minWidth: '260px', maxWidth: '260px', flexShrink: 0 }}
@@ -1009,7 +878,7 @@ export default function LandingPage() {
               className="flex flex-row gap-5 overflow-x-auto pb-4"
               style={{ WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none', msOverflowStyle: 'none' }}
             >
-              {REVIEWERS_LIST.map((reviewer, idx) => (
+              {(event?.reviewers || []).map((reviewer, idx) => (
                 <div
                   key={idx}
                   style={{ minWidth: '260px', maxWidth: '260px', flexShrink: 0 }}
