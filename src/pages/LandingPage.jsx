@@ -31,6 +31,11 @@ import artist10 from '../assets/Artisit10.jpg'
 import artist11 from '../assets/Artisit11.jpg'
 import artist12 from '../assets/Artisit12.jpg'
 import moderator from '../assets/Moderor.jpg'
+import reviewer1 from '../assets/Reviewer1.jpg'
+import reviewer2 from '../assets/Reviewer2.jpg'
+import reviewer3 from '../assets/Reviewer3.jpg'
+import reviewer4 from '../assets/Reviewer4.jpg'
+import reviewer5 from '../assets/Reviewer5.jpg'
 import heroBg from '../assets/hero-bg.jpeg'
 import isibuwaLogo from '../assets/Isibuwa_logo.png'
 import sasnakaLogo from '../assets/Sasnaka_logo.png'
@@ -48,49 +53,13 @@ const artistImages = {
   'Artisit11.jpg': artist11,
   'Artisit12.jpg': artist12,
   'Moderor.jpg': moderator,
+  'Reviewer1.jpg': reviewer1,
+  'Reviewer2.jpg': reviewer2,
+  'Reviewer3.jpg': reviewer3,
+  'Reviewer4.jpg': reviewer4,
+  'Reviewer5.jpg': reviewer5,
 }
 
-const MODERATOR_LIST = [
-  {
-    name: 'Chamindu Gamage',
-    genre: 'Master of Ceremonies',
-    image: 'Moderor.jpg',
-    district: 'Kegalle',
-    bio: 'An elegant presenter and seasoned host, guiding the festival through smooth transitions and immersive storytelling.'
-  }
-]
-
-const VOCALISTS_LIST = [
-  {
-    name: 'Sasanda Sankalana',
-    genre: 'Vocalist',
-    image: 'Artisit6.jpg',
-    district: 'Kandy',
-    bio: 'A legendary vocal artist, celebrated for his profound classical roots and expressive, soul-stirring melodies.'
-  },
-  {
-    name: 'Devindi Rajapaksha',
-    genre: 'Vocalist',
-    image: 'Artisit8.jpg',
-    district: 'Kegalle',
-    bio: 'An avant-garde composer and singer, blending deep acoustic textures with traditional Sri Lankan folk music.'
-  },
-  {
-    name: 'Hashara Sandamini',
-    genre: 'Vocalist',
-    image: 'Artisit9.jpg',
-    district: 'Rathnapura',
-    bio: 'A powerhouse vocalist whose versatility spans classical opera to high-energy contemporary fusion.'
-  },
-  {
-    name: 'Buddhima Prasad Priyanath',
-    genre: 'Vocalist',
-    image: 'Artisit5.jpg',
-    district: 'Rathnapura',
-    bio: 'A rhythm specialist whose rapid-fire classical beats define the tempo of the performance.'
-  }
-
-]
 
 const INSTRUMENTALISTS_LIST = [
   {
@@ -173,9 +142,7 @@ export default function LandingPage() {
 
   const bookingRef = useRef(null)
   const fileInputRef = useRef(null)
-  // Ref for instrument carousel auto-scroll
-  const instrumentCarouselRef = useRef(null)
-  const isHoveredRef = useRef(false)
+  // No carousel auto-scroll refs needed (single-copy display)
 
   const { register, handleSubmit, reset, formState: { errors } } = useForm({
     resolver: zodResolver(bookingSchema)
@@ -201,34 +168,6 @@ export default function LandingPage() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  // Auto-scroll instrument carousel — seamless infinite loop with hover-pause
-  useEffect(() => {
-    let animationId;
-    // Wait one rAF tick so the DOM has rendered and scrollWidth is reliable
-    const init = requestAnimationFrame(() => {
-      const container = instrumentCarouselRef?.current;
-      if (!container) return;
-      // The inner track holds two copies of the list; half = one full copy width
-      const halfWidth = container.scrollWidth / 2;
-      if (halfWidth <= 0) return;
-      const speed = 0.6; // pixels per frame
-      const step = () => {
-        if (!isHoveredRef.current) {
-          container.scrollLeft += speed;
-          // When we've scrolled one full copy, reset seamlessly to start
-          if (container.scrollLeft >= halfWidth) {
-            container.scrollLeft -= halfWidth;
-          }
-        }
-        animationId = requestAnimationFrame(step);
-      };
-      animationId = requestAnimationFrame(step);
-    });
-    return () => {
-      cancelAnimationFrame(init);
-      cancelAnimationFrame(animationId);
-    };
-  }, []);
 
 
   useEffect(() => {
@@ -840,7 +779,7 @@ export default function LandingPage() {
               Festival Host & Moderator
             </h3>
             <div className="flex justify-center">
-              {MODERATOR_LIST.map((artist, idx) => (
+              {(event?.moderators || []).map((artist, idx) => (
                 <div
                   key={idx}
                   className="w-full max-w-[260px] group relative bg-[var(--surface-3)] border border-[var(--surface-border)] p-4 transition-all duration-300 hover:border-[var(--gold-primary)]/35 flex flex-col justify-between overflow-hidden
@@ -887,15 +826,15 @@ export default function LandingPage() {
             </h3>
 
             <div
-              className="flex flex-row flex-wrap justify-center gap-5 overflow-x-auto pb-4"
-              style={{ scrollSnapType: 'x mandatory', WebkitOverflowScrolling: 'touch' }}
+              className="flex flex-row gap-5 overflow-x-auto pb-4"
+              style={{ WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none', msOverflowStyle: 'none' }}
             >
-              {VOCALISTS_LIST.map((artist, idx) => (
+              {(event?.vocalists || []).map((artist, idx) => (
                 <div
                   key={idx}
-                  style={{ scrollSnapAlign: 'start', minWidth: '280px', maxWidth: '280px' }}
+                  style={{ minWidth: '260px', maxWidth: '260px', flexShrink: 0 }}
                   className="group relative bg-[var(--surface-3)] border border-[var(--surface-border)] p-4 transition-all duration-300 hover:border-[var(--gold-primary)]/35 flex flex-col justify-between overflow-hidden
-                            after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-[var(--gold-primary)] after:transition-all after:duration-500 hover:after:w-full"
+                          after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-[var(--gold-primary)] after:transition-all after:duration-500 hover:after:w-full"
                 >
                   <span className="absolute top-3 left-3 text-[10px] font-mono text-[var(--gold-deep)]/60 font-bold z-10">
                     V{String(idx + 1).padStart(2, '0')}
@@ -936,65 +875,98 @@ export default function LandingPage() {
               Instrument Players
             </h3>
 
-            {/* Scroll container — seamless auto-scroll marquee */}
-            <div className="relative">
-              <div
-                ref={instrumentCarouselRef}
-                className="instrument-carousel flex flex-row gap-5 overflow-x-scroll pb-4"
-                style={{
-                  WebkitOverflowScrolling: 'touch',
-                  /* Hide scrollbar cross-browser */
-                  scrollbarWidth: 'none',
-                  msOverflowStyle: 'none',
-                }}
-                onMouseEnter={() => { isHoveredRef.current = true }}
-                onMouseLeave={() => { isHoveredRef.current = false }}
-              >
-                {/* Two copies of the list so the loop is seamless */}
-                {[...INSTRUMENTALISTS_LIST, ...INSTRUMENTALISTS_LIST].map((artist, idx) => (
-                  <div
-                    key={idx}
-                    style={{ minWidth: '260px', maxWidth: '260px', flexShrink: 0 }}
-                    className="group relative bg-[var(--surface-3)] border border-[var(--surface-border)] p-4 transition-all duration-300 hover:border-[var(--gold-primary)]/35 flex flex-col justify-between overflow-hidden
-                            after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-[var(--gold-primary)] after:transition-all after:duration-500 hover:after:w-full"
-                  >
-                    <span className="absolute top-3 left-3 text-[10px] font-mono text-[var(--gold-deep)]/60 font-bold z-10">
-                      I{String((idx % INSTRUMENTALISTS_LIST.length) + 1).padStart(2, '0')}
-                    </span>
-                    <div>
-                      <div className="w-full aspect-[3/4] overflow-hidden bg-black/40 border border-[var(--surface-border)] relative mb-4">
-                        {artist.image && artistImages[artist.image] ? (
-                          <img
-                            src={artistImages[artist.image]}
-                            alt={artist.name}
-                            className="w-full h-full object-cover filter grayscale contrast-[1.2] group-hover:grayscale-0 group-hover:scale-[1.05] transition-all duration-700"
-                          />
-                        ) : (
-                          <div className="w-full h-full flex items-center justify-center text-[var(--ivory-muted)]/10 text-4xl">
-                            🎵
-                          </div>
-                        )}
-                      </div>
-                      <div className="flex items-center justify-between text-[9px] tracking-[0.14em] text-[var(--gold-deep)] font-mono uppercase mb-1">
-                        <span>{artist.genre}</span>
-                        <span className="text-[var(--ivory-muted)]/40">{artist.district}</span>
-                      </div>
-                      <h3 className="font-display text-base font-bold text-[var(--ivory)] mb-2 leading-tight group-hover:text-[var(--gold-primary)] transition-colors duration-200">
-                        {artist.name}
-                      </h3>
+            <div
+              className="flex flex-row gap-5 overflow-x-auto pb-4"
+              style={{ WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+            >
+              {(event?.instrumentalists || []).map((artist, idx) => (
+                <div
+                  key={idx}
+                  style={{ minWidth: '260px', maxWidth: '260px', flexShrink: 0 }}
+                  className="group relative bg-[var(--surface-3)] border border-[var(--surface-border)] p-4 transition-all duration-300 hover:border-[var(--gold-primary)]/35 flex flex-col justify-between overflow-hidden
+                          after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-[var(--gold-primary)] after:transition-all after:duration-500 hover:after:w-full"
+                >
+                  <span className="absolute top-3 left-3 text-[10px] font-mono text-[var(--gold-deep)]/60 font-bold z-10">
+                    I{String(idx + 1).padStart(2, '0')}
+                  </span>
+                  <div>
+                    <div className="w-full aspect-[3/4] overflow-hidden bg-black/40 border border-[var(--surface-border)] relative mb-4">
+                      {artist.image && artistImages[artist.image] ? (
+                        <img
+                          src={artistImages[artist.image]}
+                          alt={artist.name}
+                          className="w-full h-full object-cover filter grayscale contrast-[1.2] group-hover:grayscale-0 group-hover:scale-[1.05] transition-all duration-700"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-[var(--ivory-muted)]/10 text-4xl">
+                          🎵
+                        </div>
+                      )}
                     </div>
-                    <p className="text-[11px] text-[var(--ivory-muted)]/45 leading-relaxed font-light mt-auto">
-                      {artist.bio}
-                    </p>
+                    <div className="flex items-center justify-between text-[9px] tracking-[0.14em] text-[var(--gold-deep)] font-mono uppercase mb-1">
+                      <span>{artist.genre}</span>
+                      <span className="text-[var(--ivory-muted)]/40">{artist.district}</span>
+                    </div>
+                    <h3 className="font-display text-base font-bold text-[var(--ivory)] mb-2 leading-tight group-hover:text-[var(--gold-primary)] transition-colors duration-200">
+                      {artist.name}
+                    </h3>
                   </div>
-                ))}
-              </div>
+                  <p className="text-[11px] text-[var(--ivory-muted)]/45 leading-relaxed font-light mt-auto">
+                    {artist.bio}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
 
-              {/* Left fade edge */}
-              <div className="absolute top-0 left-0 bottom-4 w-16 bg-gradient-to-r from-[var(--surface-2)] to-transparent pointer-events-none z-10" />
-              {/* Right fade edge */}
-              <div className="absolute top-0 right-0 bottom-4 w-16 bg-gradient-to-l from-[var(--surface-2)] to-transparent pointer-events-none z-10" />
+          {/* ── Reviewers Sub-section ── */}
 
+          <div className="mt-16">
+            <h3 className="font-display text-lg tracking-[0.15em] text-[var(--gold-primary)] uppercase border-b border-[var(--surface-border)] pb-3 mb-8">
+              Reviewers
+            </h3>
+
+            <div
+              className="flex flex-row gap-5 overflow-x-auto pb-4"
+              style={{ WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+            >
+              {(event?.reviewers || []).map((reviewer, idx) => (
+                <div
+                  key={idx}
+                  style={{ minWidth: '260px', maxWidth: '260px', flexShrink: 0 }}
+                  className="group relative bg-[var(--surface-3)] border border-[var(--surface-border)] p-4 transition-all duration-300 hover:border-[var(--gold-primary)]/35 flex flex-col justify-between overflow-hidden
+                          after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-[var(--gold-primary)] after:transition-all after:duration-500 hover:after:w-full"
+                >
+                  <span className="absolute top-3 left-3 text-[10px] font-mono text-[var(--gold-deep)]/60 font-bold z-10">
+                    R{String(idx + 1).padStart(2, '0')}
+                  </span>
+                  <div>
+                    <div className="w-full aspect-[3/4] overflow-hidden bg-black/40 border border-[var(--surface-border)] relative mb-4">
+                      {reviewer.image && artistImages[reviewer.image] ? (
+                        <img
+                          src={artistImages[reviewer.image]}
+                          alt={reviewer.name}
+                          className="w-full h-full object-cover filter grayscale contrast-[1.2] group-hover:grayscale-0 group-hover:scale-[1.05] transition-all duration-700"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-[var(--ivory-muted)]/10 text-4xl">
+                          🎵
+                        </div>
+                      )}
+                    </div>
+                    <div className="flex items-center justify-between text-[9px] tracking-[0.14em] text-[var(--gold-deep)] font-mono uppercase mb-1">
+                      <span>{reviewer.genre}</span>
+                      <span className="text-[var(--ivory-muted)]/40">{reviewer.district}</span>
+                    </div>
+                    <h3 className="font-display text-base font-bold text-[var(--ivory)] mb-2 leading-tight group-hover:text-[var(--gold-primary)] transition-colors duration-200">
+                      {reviewer.name}
+                    </h3>
+                  </div>
+                  <p className="text-[11px] text-[var(--ivory-muted)]/45 leading-relaxed font-light mt-auto">
+                    {reviewer.bio}
+                  </p>
+                </div>
+              ))}
             </div>
           </div>
         </div>
