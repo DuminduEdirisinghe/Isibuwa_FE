@@ -36,6 +36,8 @@ import reviewer2 from '../assets/Reviewer2.jpg'
 import reviewer3 from '../assets/Reviewer3.jpg'
 import reviewer4 from '../assets/Reviewer4.jpg'
 import reviewer5 from '../assets/Reviewer5.jpg'
+import reviewer6 from '../assets/Reviewer6.jpg'
+import reviewer7 from '../assets/Reviewer7.jpg'
 import heroBg from '../assets/hero-bg.jpeg'
 import isibuwaLogo from '../assets/Isibuwa_logo.png'
 import sasnakaLogo from '../assets/Sasnaka_logo.png'
@@ -58,6 +60,8 @@ const artistImages = {
   'Reviewer3.jpg': reviewer3,
   'Reviewer4.jpg': reviewer4,
   'Reviewer5.jpg': reviewer5,
+  'Reviewer6.jpg': reviewer6,
+  'Reviewer7.jpg': reviewer7,
 }
 
 
@@ -66,7 +70,7 @@ const INSTRUMENTALISTS_LIST = [
     name: 'Malshan Ranawella',
     genre: 'Violinist',
     image: 'Artisit11.jpg',
-    district: 'Colombo'
+    district: 'Kegalle'
   },
   {
     name: 'Punsarani Anodya',
