@@ -228,7 +228,7 @@ export default function LandingPage() {
 
   const formattedDate = event?.date
     ? new Date(event.date).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })
-    : 'Saturday, June 6, 2026'
+    : 'Saturday, July 25, 2026'
 
   const formattedTime = event?.date
     ? new Date(event.date).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
@@ -271,7 +271,7 @@ export default function LandingPage() {
             <span className="w-px h-3 bg-[var(--surface-border)]" />
             <span>KEGALLE, SRI LANKA</span>
             <span className="w-px h-3 bg-[var(--surface-border)]" />
-            <span>JUNE 6, 2026</span>
+            <span>JULY 25, 2026</span>
           </div>
           <button
             onClick={scrollToBooking}
@@ -496,6 +496,36 @@ export default function LandingPage() {
                   </p>
                 </div>
               ))}
+            </div>
+
+            {/* Payment Details Card */}
+            <div className="mt-5 mb-5 bg-[var(--surface-3)] border border-[var(--gold-primary)]/25 relative overflow-hidden">
+              {/* Top accent bar */}
+              <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-[var(--gold-primary)]/50 to-transparent" />
+              <div className="p-5">
+                <p className="text-[9px] tracking-[0.14em] text-[var(--gold-primary)] font-mono uppercase pb-3 mb-3 border-b border-[var(--surface-border)] flex items-center gap-2">
+                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" /></svg>
+                  Bank Transfer Details
+                </p>
+                <div className="space-y-2.5 text-xs">
+                  <div className="flex justify-between items-start gap-3">
+                    <span className="text-[var(--ivory-muted)]/50 flex-shrink-0">Account Name</span>
+                    <span className="text-[var(--ivory)] font-semibold text-right">Sasnaka Sansada</span>
+                  </div>
+                  <div className="flex justify-between items-start gap-3">
+                    <span className="text-[var(--ivory-muted)]/50 flex-shrink-0">Account No.</span>
+                    <span className="text-[var(--gold-bright)] font-bold font-mono tracking-wider text-right">8020003825</span>
+                  </div>
+                  <div className="flex justify-between items-start gap-3">
+                    <span className="text-[var(--ivory-muted)]/50 flex-shrink-0">Bank</span>
+                    <span className="text-[var(--ivory)] text-right">Commercial Bank PLC</span>
+                  </div>
+                  <div className="flex justify-between items-start gap-3">
+                    <span className="text-[var(--ivory-muted)]/50 flex-shrink-0">Branch</span>
+                    <span className="text-[var(--ivory)] text-right">City Office</span>
+                  </div>
+                </div>
+              </div>
             </div>
 
             <p className="text-[11px] text-[var(--ivory-muted)]/35 leading-relaxed">
