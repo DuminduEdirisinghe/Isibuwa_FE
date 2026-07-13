@@ -781,6 +781,10 @@ export default function LandingPage() {
                       </>
                     ) : 'Register Pass'}
                   </button>
+
+                  <ul className="mt-2 list-disc pl-5 text-red-500 text-xs leading-relaxed max-w-[100%]">
+                    <li>Tickets will be issued strictly to individuals whose names have been registered on the district lists. We will not be responsible for any tickets purchased by individuals whose names are not included in the respective district lists.</li>
+                  </ul>
                 </form>
               )}
             </div>
