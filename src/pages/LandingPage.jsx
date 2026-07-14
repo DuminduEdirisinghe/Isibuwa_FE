@@ -498,6 +498,14 @@ export default function LandingPage() {
               ))}
             </div>
 
+            {/* Notice */}
+            <div className="mb-6 flex gap-3 items-start">
+              <span className="text-red-500/90 text-sm leading-none mt-[2px]">•</span>
+              <p className="text-[13px] text-red-500/90 leading-relaxed">
+                Tickets will be issued strictly to sasnaka sansada members whose names have been registered on the district lists. We will not be responsible for any tickets purchased by individuals whose names are not included in the respective district lists.
+              </p>
+            </div>
+
             {/* Payment Details Card */}
             <div className="mt-5 mb-5 bg-[var(--surface-3)] border border-[var(--gold-primary)]/25 relative overflow-hidden">
               {/* Top accent bar */}
@@ -782,9 +790,7 @@ export default function LandingPage() {
                     ) : 'Register Pass'}
                   </button>
 
-                  <ul className="mt-2 list-disc pl-5 text-red-500 text-xs leading-relaxed max-w-[100%]">
-                    <li>Tickets will be issued strictly to individuals whose names have been registered on the district lists. We will not be responsible for any tickets purchased by individuals whose names are not included in the respective district lists.</li>
-                  </ul>
+
                 </form>
               )}
             </div>
