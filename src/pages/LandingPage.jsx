@@ -821,9 +821,6 @@ export default function LandingPage() {
                   className="w-full max-w-[260px] group relative bg-[var(--surface-3)] border border-[var(--surface-border)] p-4 transition-all duration-300 hover:border-[var(--gold-primary)]/35 flex flex-col justify-between overflow-hidden
                             after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-[var(--gold-primary)] after:transition-all after:duration-500 hover:after:w-full"
                 >
-                  <span className="absolute top-3 left-3 text-[10px] font-mono text-[var(--gold-deep)]/60 font-bold z-10">
-                    M1
-                  </span>
                   <div>
                     <div className="w-full aspect-[3/4] overflow-hidden bg-black/40 border border-[var(--surface-border)] relative mb-4">
                       {artist.image && artistImages[artist.image] ? (
