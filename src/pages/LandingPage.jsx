@@ -1011,12 +1011,6 @@ export default function LandingPage() {
         <p className="text-[var(--ivory-muted)]/30 text-[11px] font-light">
           {event?.venue || 'Deraniyagala, Kegalle'} · {formattedDate}
         </p>
-        <div className="flex justify-center mt-7">
-          <a href="/admin/login"
-            className="text-[10px] tracking-[0.14em] uppercase font-semibold text-[var(--ivory-muted)]/18 hover:text-[var(--gold-primary)] font-mono transition-colors duration-200">
-            Access Admin Gate
-          </a>
-        </div>
       </footer>
 
       {/*
