@@ -251,6 +251,9 @@ export function BookingModal({ booking: initialBooking, isOpen, onClose, onAppro
                 const cleanName = `Payment_Slip_${(name || 'Attendee').replace(/[^a-zA-Z0-9]/g, '_')}_${booking.id}${ext}`
                 return url.replace('/upload/', `/upload/fl_attachment:${cleanName}/`)
               }
+              if (url.includes('/slip') && !url.includes('download=true')) {
+                return url + (url.includes('?') ? '&download=true' : '?download=true')
+              }
               return url
             }
 

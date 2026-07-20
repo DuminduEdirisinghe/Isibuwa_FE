@@ -149,9 +149,13 @@ export function BookingTable({
                         <a
                           href={(() => {
                             const url = booking.signed_slip_url || booking.payment_slip_url
-                            if (url && url.includes('/upload/')) {
+                            if (!url) return '#'
+                            if (url.includes('/upload/')) {
                               const cleanName = `Payment_Slip_${(booking.name || 'Attendee').replace(/[^a-zA-Z0-9]/g, '_')}_${booking.id}`
                               return url.replace('/upload/', `/upload/fl_attachment:${cleanName}/`)
+                            }
+                            if (url.includes('/slip') && !url.includes('download=true')) {
+                              return url + (url.includes('?') ? '&download=true' : '?download=true')
                             }
                             return url
                           })()}
