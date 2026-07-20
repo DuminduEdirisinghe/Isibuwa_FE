@@ -139,24 +139,30 @@ function StatsView() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
           {/* Capacity visual bar */}
           <div className="glass rounded-2xl p-6 flex flex-col justify-between">
-            <div>
-              <div className="flex items-center justify-between mb-3">
-                <h2 className="text-sm font-semibold text-[var(--ivory-muted)]">Capacity Usage</h2>
-                <span className="text-sm text-[var(--ivory-muted)]/40">
-                  {stats.total - stats.rejected} / 150 filled
-                </span>
-              </div>
-              <div className="w-full bg-[var(--surface-3)] rounded-full h-4 overflow-hidden">
-                <div
-                  className="h-full rounded-full bg-gradient-to-r from-[var(--gold-deep)] via-[var(--gold-primary)] to-[var(--gold-bright)] transition-all duration-700"
-                  style={{ width: `${Math.min(100, ((stats.total - stats.rejected) / 150) * 100)}%` }}
-                />
-              </div>
-              <div className="flex justify-between text-xs text-[var(--ivory-muted)]/30 mt-2">
-                <span>0</span>
-                <span>150</span>
-              </div>
-            </div>
+            {(() => {
+              const capacity = stats.capacity || 200
+              const filled = stats.total - stats.rejected
+              return (
+                <div>
+                  <div className="flex items-center justify-between mb-3">
+                    <h2 className="text-sm font-semibold text-[var(--ivory-muted)]">Capacity Usage</h2>
+                    <span className="text-sm text-[var(--ivory-muted)]/40">
+                      {filled} / {capacity} filled
+                    </span>
+                  </div>
+                  <div className="w-full bg-[var(--surface-3)] rounded-full h-4 overflow-hidden">
+                    <div
+                      className="h-full rounded-full bg-gradient-to-r from-[var(--gold-deep)] via-[var(--gold-primary)] to-[var(--gold-bright)] transition-all duration-700"
+                      style={{ width: `${Math.min(100, (filled / capacity) * 100)}%` }}
+                    />
+                  </div>
+                  <div className="flex justify-between text-xs text-[var(--ivory-muted)]/30 mt-2">
+                    <span>0</span>
+                    <span>{capacity}</span>
+                  </div>
+                </div>
+              )
+            })()}
             
             <div className="mt-6 p-4 rounded-xl bg-[var(--surface-3)]/40 border border-[var(--surface-border)]">
               <p className="text-xs text-[var(--ivory-muted)] leading-relaxed">

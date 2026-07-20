@@ -136,7 +136,7 @@ export function BookingTable({
                         month: 'short', day: 'numeric', year: 'numeric',
                       })}
                     </td>
-                    <td className="px-4 py-4">
+                    <td className="px-4 py-4 flex items-center gap-2">
                       <button
                         id={`view-booking-${booking.id}`}
                         onClick={(e) => { e.stopPropagation(); onSelect(booking) }}
@@ -144,6 +144,26 @@ export function BookingTable({
                       >
                         View →
                       </button>
+                      {(booking.signed_slip_url || booking.payment_slip_url) && (
+                        <a
+                          href={(() => {
+                            const url = booking.signed_slip_url || booking.payment_slip_url
+                            if (url && url.includes('/upload/')) {
+                              const cleanName = `Payment_Slip_${(booking.name || 'Attendee').replace(/[^a-zA-Z0-9]/g, '_')}_${booking.id}`
+                              return url.replace('/upload/', `/upload/fl_attachment:${cleanName}/`)
+                            }
+                            return url
+                          })()}
+                          download={`Payment_Slip_${booking.name}_${booking.id}`}
+                          title="Download Payment Slip / Ticket PDF"
+                          onClick={(e) => e.stopPropagation()}
+                          className="p-1.5 rounded-lg text-[var(--ivory-muted)]/60 hover:text-[var(--gold-bright)] hover:bg-[rgba(201,146,42,0.15)] transition-colors"
+                        >
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                          </svg>
+                        </a>
+                      )}
                     </td>
                   </tr>
                 ))

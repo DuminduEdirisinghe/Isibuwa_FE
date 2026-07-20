@@ -234,7 +234,7 @@ export default function LandingPage() {
     ? new Date(event.date).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
     : '06:00 PM'
 
-  const remaining = event?.remaining_capacity ?? 150
+  const remaining = event?.remaining_capacity ?? 200
 
   const getAvailabilityBadge = (rem) => {
     if (rem === 0) return (
@@ -638,7 +638,7 @@ export default function LandingPage() {
                   </div>
                   <h3 className="font-display text-3xl font-light text-[var(--ivory)] mb-3">Gate Closed</h3>
                   <p className="text-[var(--ivory-muted)]/35 text-xs leading-relaxed max-w-xs mx-auto">
-                    All 150 available entry slots for Isimbuwa Festival 2026 have been filled. Stay tuned for future editions.
+                    All {event?.capacity ?? 200} available entry slots for Isibuwa Festival 2026 have been filled. Stay tuned for future editions.
                   </p>
                 </div>
 

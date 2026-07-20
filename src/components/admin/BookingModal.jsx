@@ -228,58 +228,123 @@ export function BookingModal({ booking: initialBooking, isOpen, onClose, onAppro
 
         {/* ── Payment slip ─────────────────────────────────── */}
         <div>
-          <p className="text-xs text-[var(--ivory-muted)]/40 uppercase tracking-wider mb-2">Payment Slip</p>
-          {isLoading ? (
-            <div className="h-32 rounded-xl skeleton" />
-          ) : slipUrl ? (
-            isPdf ? (
-              <a
-                href={slipUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                id={`slip-link-${booking.id}`}
-                className="flex items-center gap-3 p-4 rounded-xl bg-[var(--surface-3)] border border-[var(--surface-border)] hover:bg-[var(--surface-3)]/80 transition-colors group"
-              >
-                <div className="w-10 h-10 rounded-lg bg-red-500/20 flex items-center justify-center flex-shrink-0">
-                  <svg className="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
-                  </svg>
+          {(() => {
+            const getDownloadUrl = (url, name, isPdfFile) => {
+              if (!url) return '#'
+              if (url.includes('/upload/')) {
+                const ext = isPdfFile ? '.pdf' : ''
+                const cleanName = `Payment_Slip_${(name || 'Attendee').replace(/[^a-zA-Z0-9]/g, '_')}_${booking.id}${ext}`
+                return url.replace('/upload/', `/upload/fl_attachment:${cleanName}/`)
+              }
+              return url
+            }
+
+            const downloadUrl = slipUrl ? getDownloadUrl(slipUrl, booking.name, isPdf) : '#'
+
+            return (
+              <>
+                <div className="flex items-center justify-between mb-2">
+                  <p className="text-xs text-[var(--ivory-muted)]/40 uppercase tracking-wider">Payment Slip / Attachment</p>
+                  {slipUrl && (
+                    <a
+                      href={downloadUrl}
+                      download={`Payment_Slip_${(booking.name || 'Booking').replace(/[^a-zA-Z0-9]/g, '_')}_${booking.id}${isPdf ? '.pdf' : '.jpg'}`}
+                      id={`slip-download-top-${booking.id}`}
+                      className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-[var(--gold-primary)]/15 border border-[var(--gold-primary)]/30 hover:bg-[var(--gold-primary)]/25 text-xs font-semibold text-[var(--gold-bright)] transition-all"
+                    >
+                      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                      </svg>
+                      <span>Download File</span>
+                    </a>
+                  )}
                 </div>
-                <div>
-                  <p className="text-sm font-medium text-[var(--ivory)] group-hover:text-[var(--gold-primary)] transition-colors">
-                    View Payment Slip (PDF)
-                  </p>
-                  <p className="text-xs text-[var(--ivory-muted)]/30">Opens in new tab · Valid for 1 hour</p>
-                </div>
-                <svg className="w-4 h-4 text-[var(--ivory-muted)]/30 ml-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                </svg>
-              </a>
-            ) : (
-              <a
-                href={slipUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                id={`slip-img-${booking.id}`}
-                className="block rounded-xl overflow-hidden border border-[var(--surface-border)] hover:border-[var(--gold-primary)]/40 transition-colors group"
-              >
-                <img
-                  src={slipUrl}
-                  alt="Payment slip"
-                  className="w-full max-h-64 object-contain bg-black/20 group-hover:scale-[1.02] transition-transform duration-300"
-                  onError={(e) => {
-                    e.target.style.display = 'none'
-                    e.target.nextSibling.style.display = 'flex'
-                  }}
-                />
-                <div style={{ display: 'none' }} className="h-32 items-center justify-center text-[var(--ivory-muted)]/40 text-sm">
-                  Failed to load image · <a href={slipUrl} className="text-[var(--gold-primary)] underline ml-1">Open link</a>
-                </div>
-              </a>
+
+                {isLoading ? (
+                  <div className="h-32 rounded-xl skeleton" />
+                ) : slipUrl ? (
+                  isPdf ? (
+                    <div className="flex flex-col gap-3">
+                      <div className="flex flex-col sm:flex-row gap-2">
+                        <a
+                          href={slipUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          id={`slip-link-${booking.id}`}
+                          className="flex-1 flex items-center justify-center gap-2 p-3 rounded-xl bg-[var(--surface-3)] border border-[var(--surface-border)] hover:bg-[var(--surface-3)]/80 text-xs font-semibold text-[var(--ivory)] hover:text-[var(--gold-primary)] transition-all group"
+                        >
+                          <div className="w-6 h-6 rounded-lg bg-red-500/20 flex items-center justify-center flex-shrink-0">
+                            <svg className="w-3.5 h-3.5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                            </svg>
+                          </div>
+                          <span>Open PDF in New Tab ↗</span>
+                        </a>
+
+                        <a
+                          href={downloadUrl}
+                          download={`Payment_Slip_${(booking.name || 'Booking').replace(/[^a-zA-Z0-9]/g, '_')}_${booking.id}.pdf`}
+                          id={`slip-download-btn-${booking.id}`}
+                          className="flex-1 flex items-center justify-center gap-2 p-3 rounded-xl bg-[var(--gold-primary)]/20 border border-[var(--gold-primary)]/40 hover:bg-[var(--gold-primary)]/30 text-xs font-semibold text-[var(--gold-bright)] transition-all"
+                        >
+                          <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                          </svg>
+                          <span>Download PDF File</span>
+                        </a>
+                      </div>
+
+                      {/* Embedded PDF Viewer */}
+                      <div className="w-full h-80 rounded-xl overflow-hidden border border-[var(--surface-border)] bg-black/40 relative">
+                        <iframe
+                          src={slipUrl}
+                          title={`Payment slip PDF for ${booking.name}`}
+                          className="w-full h-full border-0"
+                        />
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="flex flex-col gap-2">
+                      <a
+                        href={slipUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        id={`slip-img-${booking.id}`}
+                        className="block rounded-xl overflow-hidden border border-[var(--surface-border)] hover:border-[var(--gold-primary)]/40 transition-colors group relative"
+                      >
+                        <img
+                          src={slipUrl}
+                          alt="Payment slip"
+                          className="w-full max-h-64 object-contain bg-black/20 group-hover:scale-[1.01] transition-transform duration-300"
+                          onError={(e) => {
+                            e.target.style.display = 'none'
+                            e.target.nextSibling.style.display = 'flex'
+                          }}
+                        />
+                        <div style={{ display: 'none' }} className="h-32 items-center justify-center text-[var(--ivory-muted)]/40 text-sm">
+                          Failed to load image · <a href={slipUrl} className="text-[var(--gold-primary)] underline ml-1">Open link</a>
+                        </div>
+                      </a>
+                      <div className="flex justify-end">
+                        <a
+                          href={downloadUrl}
+                          download={`Payment_Slip_${(booking.name || 'Booking').replace(/[^a-zA-Z0-9]/g, '_')}_${booking.id}.jpg`}
+                          className="inline-flex items-center gap-1.5 text-xs text-[var(--gold-primary)] hover:underline"
+                        >
+                          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                          </svg>
+                          Download Image File
+                        </a>
+                      </div>
+                    </div>
+                  )
+                ) : (
+                  <p className="text-[var(--ivory-muted)]/30 text-sm">No payment slip available</p>
+                )}
+              </>
             )
-          ) : (
-            <p className="text-[var(--ivory-muted)]/30 text-sm">No payment slip available</p>
-          )}
+          })()}
         </div>
 
         {/* ── Error ────────────────────────────────────────── */}
