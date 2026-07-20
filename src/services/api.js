@@ -85,6 +85,9 @@ export const rejectBooking = (id) => api.patch(`/api/admin/bookings/${id}/reject
 /** @param {number} id */
 export const checkinBooking = (id) => api.patch(`/api/admin/bookings/${id}/checkin`)
 
+/** @param {number} id */
+export const deleteBooking = (id) => api.delete(`/api/admin/bookings/${id}`)
+
 /** Fetch admin dashboard stats */
 export const getStats = () => api.get('/api/admin/stats')
 

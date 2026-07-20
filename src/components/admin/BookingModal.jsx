@@ -9,10 +9,10 @@ import { Badge } from '../ui/Badge'
 import { Button } from '../ui/Button'
 import { getBooking } from '../../services/api'
 
-export function BookingModal({ booking: initialBooking, isOpen, onClose, onApprove, onReject, onCheckin }) {
+export function BookingModal({ booking: initialBooking, isOpen, onClose, onApprove, onReject, onCheckin, onDelete, initialConfirmAction = null }) {
   const [booking,        setBooking]        = useState(initialBooking)
   const [isLoading,      setIsLoading]      = useState(false)
-  const [confirmAction,  setConfirmAction]  = useState(null) // 'approve' | 'reject' | 'checkin' | null
+  const [confirmAction,  setConfirmAction]  = useState(initialConfirmAction) // 'approve' | 'reject' | 'checkin' | 'delete_step1' | 'delete_step2' | null
   const [actionLoading,  setActionLoading]  = useState(false)
   const [actionError,    setActionError]    = useState(null)
 
@@ -32,9 +32,9 @@ export function BookingModal({ booking: initialBooking, isOpen, onClose, onAppro
 
   useEffect(() => {
     fetchDetail()
-    setConfirmAction(null)
+    setConfirmAction(initialConfirmAction)
     setActionError(null)
-  }, [fetchDetail])
+  }, [fetchDetail, initialConfirmAction])
 
   if (!booking) return null
 
@@ -75,6 +75,21 @@ export function BookingModal({ booking: initialBooking, isOpen, onClose, onAppro
       setBooking(prev => ({ ...prev, checked_in_at: new Date().toISOString() }))
     } catch (err) {
       setActionError(err.response?.data?.error || 'Failed to check in')
+    } finally {
+      setActionLoading(false)
+      setConfirmAction(null)
+    }
+  }
+
+  const handleDelete = async () => {
+    if (!onDelete) return
+    setActionLoading(true)
+    setActionError(null)
+    try {
+      await onDelete(booking.id)
+      onClose()
+    } catch (err) {
+      setActionError(err.response?.data?.error || 'Failed to delete booking')
     } finally {
       setActionLoading(false)
       setConfirmAction(null)
@@ -354,8 +369,77 @@ export function BookingModal({ booking: initialBooking, isOpen, onClose, onAppro
           </div>
         )}
 
-        {/* ── Actions (only for pending) ────────────────────── */}
-        {booking.status === 'pending' && (
+        {/* ── Confirm Delete Step 1 ─────────────────────────── */}
+        {confirmAction === 'delete_step1' && (
+          <div className="glass rounded-xl p-4 flex flex-col gap-3 border border-amber-500/40 bg-amber-500/10">
+            <div className="flex items-center justify-between text-xs font-semibold text-amber-400 uppercase tracking-wider">
+              <span>⚠️ Delete Confirmation — Step 1 of 2</span>
+            </div>
+            <p className="text-[var(--ivory)] text-sm leading-relaxed">
+              Are you sure you want to delete the booking for <strong className="text-white">{booking.name}</strong> ({booking.email})?
+              <br/>
+              <span className="text-[var(--ivory-muted)]/60 text-xs">This will remove their record and any issued ticket from the database.</span>
+            </p>
+            <div className="flex gap-3 pt-1">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="flex-1"
+                onClick={() => setConfirmAction(null)}
+                disabled={actionLoading}
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="danger"
+                size="sm"
+                className="flex-1 font-semibold"
+                onClick={() => setConfirmAction('delete_step2')}
+                id={`delete-step1-proceed-${booking.id}`}
+              >
+                Proceed to Final Confirmation →
+              </Button>
+            </div>
+          </div>
+        )}
+
+        {/* ── Confirm Delete Step 2 (Final Confirmation) ────── */}
+        {confirmAction === 'delete_step2' && (
+          <div className="glass rounded-xl p-4 flex flex-col gap-3 border-2 border-red-500 bg-red-950/40 shadow-lg shadow-red-500/10">
+            <div className="flex items-center gap-2 text-xs font-bold text-red-400 uppercase tracking-widest">
+              <span>🚨 FINAL CONFIRMATION — Step 2 of 2</span>
+            </div>
+            <p className="text-red-200 text-sm font-medium leading-relaxed">
+              Are you ABSOLUTELY sure you want to PERMANENTLY delete booking #{booking.id} for <strong className="text-white underline">{booking.name}</strong>?
+              <br/>
+              <span className="text-red-400/90 text-xs font-normal">This action is permanent and CANNOT be undone!</span>
+            </p>
+            <div className="flex gap-3 pt-1">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="flex-1 text-[var(--ivory-muted)]"
+                onClick={() => setConfirmAction(null)}
+                disabled={actionLoading}
+              >
+                Cancel & Keep Booking
+              </Button>
+              <Button
+                variant="danger"
+                size="sm"
+                className="flex-1 bg-red-600 hover:bg-red-700 font-bold"
+                loading={actionLoading}
+                onClick={handleDelete}
+                id={`confirm-delete-final-${booking.id}`}
+              >
+                🔥 Yes, Permanently Delete
+              </Button>
+            </div>
+          </div>
+        )}
+
+        {/* ── Actions (for pending bookings) ────────────────── */}
+        {booking.status === 'pending' && (!confirmAction || confirmAction === 'approve' || confirmAction === 'reject') && (
           <>
             {confirmAction && confirmAction !== 'checkin' ? (
               <div className="glass rounded-xl p-4 flex flex-col gap-3">
@@ -409,6 +493,22 @@ export function BookingModal({ booking: initialBooking, isOpen, onClose, onAppro
               </div>
             ) : null}
           </>
+        )}
+
+        {/* ── Delete Option Button (Available for all statuses) ── */}
+        {onDelete && !confirmAction && (
+          <div className="pt-2 border-t border-[var(--surface-border)] flex justify-end">
+            <button
+              id={`delete-booking-btn-${booking.id}`}
+              onClick={() => setConfirmAction('delete_step1')}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-red-400/70 hover:text-red-400 hover:bg-red-500/10 transition-colors"
+            >
+              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+              </svg>
+              Delete Booking
+            </button>
+          </div>
         )}
       </div>
     </Modal>

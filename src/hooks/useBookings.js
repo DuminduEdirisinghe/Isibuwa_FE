@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from 'react'
-import { getBookings as apiGetBookings, approveBooking as apiApprove, rejectBooking as apiReject, checkinBooking as apiCheckin } from '../services/api'
+import { getBookings as apiGetBookings, approveBooking as apiApprove, rejectBooking as apiReject, checkinBooking as apiCheckin, deleteBooking as apiDelete } from '../services/api'
 
 /**
  * useBookings — manages admin booking list state
@@ -21,6 +21,7 @@ import { getBookings as apiGetBookings, approveBooking as apiApprove, rejectBook
  *   handleApprove: Function,
  *   handleReject: Function,
  *   handleCheckin: Function,
+ *   handleDelete: Function,
  * }}
  */
 export function useBookings() {
@@ -75,6 +76,11 @@ export function useBookings() {
     await fetchBookings()
   }, [fetchBookings])
 
+  const handleDelete = useCallback(async (id) => {
+    await apiDelete(id)
+    await fetchBookings()
+  }, [fetchBookings])
+
   return {
     bookings,
     total,
@@ -92,5 +98,6 @@ export function useBookings() {
     handleApprove,
     handleReject,
     handleCheckin,
+    handleDelete,
   }
 }

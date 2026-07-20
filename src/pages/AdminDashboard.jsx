@@ -217,13 +217,24 @@ function StatsView() {
 // ── Bookings View ────────────────────────────────────────────
 function BookingsView() {
   const [selectedBooking, setSelectedBooking] = useState(null)
+  const [initialAction,    setInitialAction]    = useState(null)
 
   const {
     bookings, total, page, totalPages, limit,
     search, statusFilter, isLoading,
     setPage, setSearch, setStatusFilter,
-    handleApprove, handleReject, handleCheckin,
+    handleApprove, handleReject, handleCheckin, handleDelete,
   } = useBookings()
+
+  const handleOpenBooking = (booking, action = null) => {
+    setSelectedBooking(booking)
+    setInitialAction(action)
+  }
+
+  const handleCloseBooking = () => {
+    setSelectedBooking(null)
+    setInitialAction(null)
+  }
 
   return (
     <div>
@@ -235,7 +246,8 @@ function BookingsView() {
       <BookingTable
         bookings={bookings}
         isLoading={isLoading}
-        onSelect={setSelectedBooking}
+        onSelect={(b) => handleOpenBooking(b, null)}
+        onDeleteRequest={(b) => handleOpenBooking(b, 'delete_step1')}
         search={search}
         statusFilter={statusFilter}
         onSearchChange={setSearch}
@@ -251,10 +263,12 @@ function BookingsView() {
         <BookingModal
           booking={selectedBooking}
           isOpen={!!selectedBooking}
-          onClose={() => setSelectedBooking(null)}
+          initialConfirmAction={initialAction}
+          onClose={handleCloseBooking}
           onApprove={handleApprove}
           onReject={handleReject}
           onCheckin={handleCheckin}
+          onDelete={handleDelete}
         />
       )}
     </div>
