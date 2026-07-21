@@ -234,7 +234,8 @@ export default function LandingPage() {
     ? new Date(event.date).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
     : '06:00 PM'
 
-  const remaining = event?.remaining_capacity ?? 200
+  const remaining = event?.remaining_capacity ?? 0
+  const isRegistrationClosed = true || Boolean(event?.is_closed) || remaining === 0
 
   const getAvailabilityBadge = (rem) => {
     if (rem === 0) return (
