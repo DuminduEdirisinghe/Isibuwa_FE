@@ -506,33 +506,23 @@ export default function LandingPage() {
               </p>
             </div>
 
-            {/* Payment Details Card */}
-            <div className="mt-5 mb-5 bg-[var(--surface-3)] border border-[var(--gold-primary)]/25 relative overflow-hidden">
+            {/* Registrations Closed Notice Card (Replaces Bank Transfer Details) */}
+            <div className="mt-5 mb-5 bg-[var(--surface-3)] border border-amber-500/35 relative overflow-hidden">
               {/* Top accent bar */}
-              <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-[var(--gold-primary)]/50 to-transparent" />
+              <div className="h-[2px] w-full bg-gradient-to-r from-transparent via-amber-500/60 to-transparent" />
               <div className="p-5">
-                <p className="text-[9px] tracking-[0.14em] text-[var(--gold-primary)] font-mono uppercase pb-3 mb-3 border-b border-[var(--surface-border)] flex items-center gap-2">
-                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" /></svg>
-                  Bank Transfer Details
+                <p className="text-[9px] tracking-[0.14em] text-amber-400 font-mono uppercase pb-2.5 mb-3 border-b border-[var(--surface-border)] flex items-center gap-2 font-semibold">
+                  <svg className="w-3.5 h-3.5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                  </svg>
+                  REGISTRATIONS HAVE CLOSED
                 </p>
-                <div className="space-y-2.5 text-xs">
-                  <div className="flex justify-between items-start gap-3">
-                    <span className="text-[var(--ivory-muted)]/50 flex-shrink-0">Account Name</span>
-                    <span className="text-[var(--ivory)] font-semibold text-right">Sasnaka Sansada</span>
-                  </div>
-                  <div className="flex justify-between items-start gap-3">
-                    <span className="text-[var(--ivory-muted)]/50 flex-shrink-0">Account No.</span>
-                    <span className="text-[var(--gold-bright)] font-bold font-mono tracking-wider text-right">8020003825</span>
-                  </div>
-                  <div className="flex justify-between items-start gap-3">
-                    <span className="text-[var(--ivory-muted)]/50 flex-shrink-0">Bank</span>
-                    <span className="text-[var(--ivory)] text-right">Commercial Bank PLC</span>
-                  </div>
-                  <div className="flex justify-between items-start gap-3">
-                    <span className="text-[var(--ivory-muted)]/50 flex-shrink-0">Branch</span>
-                    <span className="text-[var(--ivory)] text-right">City Office</span>
-                  </div>
-                </div>
+                <p className="text-xs text-[var(--ivory)] font-medium leading-relaxed mb-2">
+                  Registrations for Isibuwa Festival 2026 are now officially closed.
+                </p>
+                <p className="text-[11px] text-[var(--ivory-muted)]/60 leading-relaxed">
+                  Bank transfer details have been hidden as no further payment transfers or new registrations are being accepted. If you have already completed your transfer and submitted your reference, our team is verifying your payment and your ticket will be issued via email.
+                </p>
               </div>
             </div>
 
