@@ -635,6 +635,15 @@ export default function LandingPage() {
               ) : (
                 <form onSubmit={handleSubmit(handleFormSubmit)} noValidate className="flex flex-col gap-5">
 
+                  {isRegistrationClosed && (
+                    <div className="p-3.5 bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs flex items-center gap-2.5 font-medium">
+                      <svg className="w-4 h-4 flex-shrink-0 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                      </svg>
+                      <span>Registration closed — Form inputs are disabled.</span>
+                    </div>
+                  )}
+
                   {/* Full Name */}
                   <div className="flex flex-col gap-1.5">
                     <label className="text-[10px] uppercase tracking-[0.1em] text-[var(--ivory-muted)]/70 font-medium">
@@ -642,9 +651,10 @@ export default function LandingPage() {
                     </label>
                     <input
                       type="text"
+                      disabled={isRegistrationClosed}
                       {...register('name')}
                       placeholder="e.g. Binura Senevirathna"
-                      className="w-full bg-[var(--surface-3)] border border-[var(--surface-border)] px-4 py-3 text-sm text-[var(--ivory)] placeholder-[var(--ivory-muted)]/25 focus:outline-none focus:border-[var(--gold-primary)] focus:ring-1 focus:ring-[rgba(201,146,42,0.15)] transition-all"
+                      className="w-full bg-[var(--surface-3)] border border-[var(--surface-border)] px-4 py-3 text-sm text-[var(--ivory)] placeholder-[var(--ivory-muted)]/25 focus:outline-none focus:border-[var(--gold-primary)] focus:ring-1 focus:ring-[rgba(201,146,42,0.15)] transition-all disabled:opacity-40 disabled:cursor-not-allowed"
                     />
                     {errors.name && <p className="text-[11px] text-red-400 flex items-center gap-1.5"><span>⚠</span>{errors.name.message}</p>}
                   </div>
@@ -656,9 +666,10 @@ export default function LandingPage() {
                     </label>
                     <input
                       type="email"
+                      disabled={isRegistrationClosed}
                       {...register('email')}
                       placeholder="you@example.com"
-                      className="w-full bg-[var(--surface-3)] border border-[var(--surface-border)] px-4 py-3 text-sm text-[var(--ivory)] placeholder-[var(--ivory-muted)]/25 focus:outline-none focus:border-[var(--gold-primary)] focus:ring-1 focus:ring-[rgba(201,146,42,0.15)] transition-all"
+                      className="w-full bg-[var(--surface-3)] border border-[var(--surface-border)] px-4 py-3 text-sm text-[var(--ivory)] placeholder-[var(--ivory-muted)]/25 focus:outline-none focus:border-[var(--gold-primary)] focus:ring-1 focus:ring-[rgba(201,146,42,0.15)] transition-all disabled:opacity-40 disabled:cursor-not-allowed"
                     />
                     {errors.email && <p className="text-[11px] text-red-400 flex items-center gap-1.5"><span>⚠</span>{errors.email.message}</p>}
                   </div>
@@ -670,9 +681,10 @@ export default function LandingPage() {
                     </label>
                     <input
                       type="tel"
+                      disabled={isRegistrationClosed}
                       {...register('phone')}
                       placeholder="+94 77 123 4567"
-                      className="w-full bg-[var(--surface-3)] border border-[var(--surface-border)] px-4 py-3 text-sm text-[var(--ivory)] placeholder-[var(--ivory-muted)]/25 focus:outline-none focus:border-[var(--gold-primary)] focus:ring-1 focus:ring-[rgba(201,146,42,0.15)] transition-all"
+                      className="w-full bg-[var(--surface-3)] border border-[var(--surface-border)] px-4 py-3 text-sm text-[var(--ivory)] placeholder-[var(--ivory-muted)]/25 focus:outline-none focus:border-[var(--gold-primary)] focus:ring-1 focus:ring-[rgba(201,146,42,0.15)] transition-all disabled:opacity-40 disabled:cursor-not-allowed"
                     />
                     {errors.phone && <p className="text-[11px] text-red-400 flex items-center gap-1.5"><span>⚠</span>{errors.phone.message}</p>}
                   </div>
@@ -684,8 +696,9 @@ export default function LandingPage() {
                     </label>
                     <div className="relative">
                       <select
+                        disabled={isRegistrationClosed}
                         {...register('district')}
-                        className="w-full bg-[var(--surface-3)] border border-[var(--surface-border)] px-4 py-3 text-sm text-[var(--ivory)] focus:outline-none focus:border-[var(--gold-primary)] focus:ring-1 focus:ring-[rgba(201,146,42,0.15)] transition-all appearance-none cursor-pointer"
+                        className="w-full bg-[var(--surface-3)] border border-[var(--surface-border)] px-4 py-3 text-sm text-[var(--ivory)] focus:outline-none focus:border-[var(--gold-primary)] focus:ring-1 focus:ring-[rgba(201,146,42,0.15)] transition-all appearance-none cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
                       >
                         <option value="" className="bg-[var(--surface-3)] text-[var(--ivory-muted)]/40">Select your district</option>
                         {SRI_LANKAN_DISTRICTS.map(d => (
@@ -706,9 +719,10 @@ export default function LandingPage() {
                     </label>
                     <input
                       type="text"
+                      disabled={isRegistrationClosed}
                       {...register('payment_reference')}
                       placeholder="e.g. TXN1029384"
-                      className="w-full bg-[var(--surface-3)] border border-[var(--surface-border)] px-4 py-3 text-sm text-[var(--ivory)] placeholder-[var(--ivory-muted)]/25 focus:outline-none focus:border-[var(--gold-primary)] focus:ring-1 focus:ring-[rgba(201,146,42,0.15)] transition-all"
+                      className="w-full bg-[var(--surface-3)] border border-[var(--surface-border)] px-4 py-3 text-sm text-[var(--ivory)] placeholder-[var(--ivory-muted)]/25 focus:outline-none focus:border-[var(--gold-primary)] focus:ring-1 focus:ring-[rgba(201,146,42,0.15)] transition-all disabled:opacity-40 disabled:cursor-not-allowed"
                     />
                     {errors.payment_reference && <p className="text-[11px] text-red-400 flex items-center gap-1.5"><span>⚠</span>{errors.payment_reference.message}</p>}
                   </div>
@@ -720,20 +734,23 @@ export default function LandingPage() {
                       <span className="ml-1.5 text-[var(--ivory-muted)]/30 lowercase normal-case">(jpeg, png, pdf · max 5mb)</span>
                     </label>
                     <div
-                      onDragEnter={e => { e.preventDefault(); setDragActive(true) }}
-                      onDragLeave={e => { e.preventDefault(); setDragActive(false) }}
-                      onDragOver={e => { e.preventDefault(); setDragActive(true) }}
-                      onDrop={handleDrop}
-                      onClick={() => fileInputRef.current?.click()}
+                      onDragEnter={e => { e.preventDefault(); !isRegistrationClosed && setDragActive(true) }}
+                      onDragLeave={e => { e.preventDefault(); !isRegistrationClosed && setDragActive(false) }}
+                      onDragOver={e => { e.preventDefault(); !isRegistrationClosed && setDragActive(true) }}
+                      onDrop={e => { !isRegistrationClosed && handleDrop(e) }}
+                      onClick={() => !isRegistrationClosed && fileInputRef.current?.click()}
                       className={[
-                        'border border-dashed p-6 cursor-pointer flex flex-col items-center justify-center gap-2.5 transition-all min-h-[100px]',
-                        dragActive ? 'border-[var(--gold-primary)] bg-[rgba(201,146,42,0.07)]'
-                          : file ? 'border-emerald-500/40 bg-emerald-500/5'
-                            : fileError ? 'border-red-500/35 bg-red-500/5'
-                              : 'border-[var(--gold-deep)]/60 bg-[var(--surface-3)] hover:border-[var(--gold-primary)]/60'
+                        'border border-dashed p-6 flex flex-col items-center justify-center gap-2.5 transition-all min-h-[100px]',
+                        isRegistrationClosed
+                          ? 'border-[var(--surface-border)] bg-[var(--surface-3)]/30 opacity-40 cursor-not-allowed'
+                          : dragActive ? 'border-[var(--gold-primary)] bg-[rgba(201,146,42,0.07)] cursor-pointer'
+                            : file ? 'border-emerald-500/40 bg-emerald-500/5 cursor-pointer'
+                              : fileError ? 'border-red-500/35 bg-red-500/5 cursor-pointer'
+                                : 'border-[var(--gold-deep)]/60 bg-[var(--surface-3)] hover:border-[var(--gold-primary)]/60 cursor-pointer'
                       ].join(' ')}
                     >
                       <input ref={fileInputRef} type="file" accept=".jpg,.jpeg,.png,.pdf"
+                        disabled={isRegistrationClosed}
                         onChange={e => { const f = e.target.files[0]; if (f) handleFileChange(f) }}
                         className="hidden"
                       />
@@ -769,15 +786,15 @@ export default function LandingPage() {
 
                   <button
                     type="submit"
-                    disabled={bookingStatus === 'loading'}
-                    className="w-full mt-2 py-4 text-[11px] font-bold uppercase tracking-[0.14em] bg-[var(--gold-primary)] hover:bg-[var(--gold-bright)] hover:scale-[1.005] text-[var(--surface-1)] active:scale-[0.98] transition-all disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2.5"
+                    disabled={isRegistrationClosed || bookingStatus === 'loading'}
+                    className="w-full mt-2 py-4 text-[11px] font-bold uppercase tracking-[0.14em] bg-[var(--gold-primary)] hover:bg-[var(--gold-bright)] hover:scale-[1.005] text-[var(--surface-1)] active:scale-[0.98] transition-all disabled:opacity-40 disabled:bg-[var(--surface-3)] disabled:text-[var(--ivory-muted)]/40 disabled:border disabled:border-[var(--surface-border)] disabled:cursor-not-allowed flex items-center justify-center gap-2.5"
                   >
                     {bookingStatus === 'loading' ? (
                       <>
                         <span className="w-3 h-3 border border-[var(--surface-1)]/60 border-t-[var(--surface-1)] rounded-full animate-spin" />
                         Submitting…
                       </>
-                    ) : 'Register Pass'}
+                    ) : isRegistrationClosed ? 'REGISTRATION CLOSED' : 'Register Pass'}
                   </button>
 
 
