@@ -234,13 +234,13 @@ export default function LandingPage() {
     ? new Date(event.date).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
     : '06:00 PM'
 
-  const isRegistrationClosed = true || event?.is_closed || event?.remaining_capacity === 0
+  const remaining = event?.remaining_capacity ?? 200
 
   const getAvailabilityBadge = (rem) => {
-    if (isRegistrationClosed || rem === 0) return (
-      <span className="inline-flex items-center gap-2 px-3 py-1.5 text-[11px] uppercase tracking-[0.1em] font-semibold border border-red-500/40 bg-red-500/10 text-red-400">
-        <span className="w-1.5 h-1.5 rounded-full bg-red-500 flex-shrink-0 animate-pulse" />
-        Registration Closed
+    if (rem === 0) return (
+      <span className="inline-flex items-center gap-2 px-3 py-1.5 text-[11px] uppercase tracking-[0.1em] font-semibold border border-slate-500/30 bg-slate-500/10 text-slate-400">
+        <span className="w-1.5 h-1.5 rounded-full bg-slate-500 flex-shrink-0" />
+        Sold Out
       </span>
     )
     if (rem <= 30) return (
@@ -275,9 +275,9 @@ export default function LandingPage() {
           </div>
           <button
             onClick={scrollToBooking}
-            className="px-5 py-2 text-[11px] font-semibold uppercase tracking-[0.12em] border border-red-500/40 text-red-300 bg-red-950/40 hover:bg-red-900/60 active:scale-[0.97] transition-all duration-200"
+            className="px-5 py-2 text-[11px] font-semibold uppercase tracking-[0.12em] border border-[var(--gold-primary)] text-[var(--gold-bright)] bg-transparent hover:bg-[var(--gold-primary)] hover:text-[var(--surface-1)] active:scale-[0.97] transition-all duration-200"
           >
-            Portal Closed
+            Get Ticket
           </button>
         </div>
       </header>
@@ -338,13 +338,9 @@ export default function LandingPage() {
             <div className="flex flex-col sm:flex-row gap-3 mt-2">
               <button
                 onClick={scrollToBooking}
-                className={`w-full sm:w-auto px-8 py-4 text-[11px] font-bold uppercase tracking-[0.14em] transition-all ${
-                  isRegistrationClosed
-                    ? 'bg-red-950/80 border border-red-500/40 text-red-300 hover:bg-red-900/60'
-                    : 'bg-[var(--gold-primary)] hover:bg-[var(--gold-bright)] text-[var(--surface-1)] active:scale-[0.98]'
-                }`}
+                className="w-full sm:w-auto px-8 py-4 text-[11px] font-bold uppercase tracking-[0.14em] bg-[var(--gold-primary)] hover:bg-[var(--gold-bright)] text-[var(--surface-1)] active:scale-[0.98] transition-all"
               >
-                {isRegistrationClosed ? 'Portal Closed' : 'Secure Ticket'}
+                Secure Ticket
               </button>
               <button
                 onClick={() => document.getElementById('lineup')?.scrollIntoView({ behavior: 'smooth' })}
@@ -437,13 +433,9 @@ export default function LandingPage() {
             <div className="flex items-center gap-4">
               <button
                 onClick={scrollToBooking}
-                className={`px-8 py-3.5 text-[11px] font-bold uppercase tracking-[0.14em] transition-all duration-200 ${
-                  isRegistrationClosed
-                    ? 'bg-red-950/80 border border-red-500/40 text-red-300 hover:bg-red-900/60'
-                    : 'bg-[var(--gold-primary)] hover:bg-[var(--gold-bright)] text-[var(--surface-1)] hover:scale-[1.02] active:scale-[0.98]'
-                }`}
+                className="px-8 py-3.5 text-[11px] font-bold uppercase tracking-[0.14em] bg-[var(--gold-primary)] hover:bg-[var(--gold-bright)] text-[var(--surface-1)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-200"
               >
-                {isRegistrationClosed ? 'Portal Closed' : 'Secure Ticket'}
+                Secure Ticket
               </button>
               <button
                 onClick={() => document.getElementById('lineup')?.scrollIntoView({ behavior: 'smooth' })}
@@ -590,30 +582,7 @@ export default function LandingPage() {
             <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[var(--gold-primary)]/50 to-transparent" />
 
             <div className="p-7 xl:p-9 pt-8">
-              {isRegistrationClosed ? (
-                <div className="text-center py-12 px-2">
-                  <div className="w-16 h-16 rounded-full bg-gradient-to-b from-red-500/20 to-amber-500/10 border border-red-500/40 flex items-center justify-center mx-auto mb-6 shadow-[0_0_30px_rgba(239,68,68,0.15)]">
-                    <svg className="w-8 h-8 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                    </svg>
-                  </div>
-                  <p className="text-[10px] tracking-[0.2em] text-red-400 font-mono uppercase mb-2">Gate Notice</p>
-                  <h3 className="font-display text-3xl font-light text-[var(--ivory)] mb-4">Registration Portal Closed</h3>
-                  <p className="text-[var(--ivory-muted)]/70 text-xs leading-relaxed max-w-sm mx-auto mb-6 font-light">
-                    Registrations for <strong className="text-[var(--gold-bright)] font-semibold">Isibuwa Festival 2026</strong> are now officially closed. All available entry passes have been allocated.
-                  </p>
-
-                  <div className="max-w-xs mx-auto bg-[var(--surface-3)] border border-[var(--surface-border)] p-5 text-left text-xs space-y-3 font-mono">
-                    <div className="flex justify-between border-b border-[var(--surface-border)] pb-2 text-[var(--ivory-muted)]/50">
-                      <span>PORTAL STATUS</span>
-                      <span className="text-red-400 font-bold uppercase">CLOSED</span>
-                    </div>
-                    <div className="text-[11px] text-[var(--ivory-muted)]/60 leading-relaxed font-sans pt-1">
-                      If you have already submitted your payment reference, our administrative team is verifying transactions. Approved entry passes will be sent directly to your registered email address.
-                    </div>
-                  </div>
-                </div>
-              ) : isLoading ? (
+              {isLoading ? (
                 <div className="space-y-6">
                   <div className="h-5 w-32 bg-[var(--surface-3)] animate-pulse rounded-sm" />
                   {[...Array(4)].map((_, i) => (
