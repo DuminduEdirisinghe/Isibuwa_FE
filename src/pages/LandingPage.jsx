@@ -334,7 +334,7 @@ export default function LandingPage() {
           <div className="flex flex-col gap-4">
             {getAvailabilityBadge(remaining)}
             <p className="text-[var(--ivory-muted)] text-sm leading-[1.85] font-light max-w-md">
-              Isimbuwa Festival returns for its 2026 edition in the serene wilderness of Deraniyagala. Experience an evening dedicated to authentic musical artistry, bringing together classical melodies, vocal performances, and deep instrumental fusion under the stars.
+              Isimbuwa Festival returns for its 2026 edition at Siri Sena National College, Aguruwella, Imbulana. Experience an evening dedicated to authentic musical artistry, bringing together classical melodies, vocal performances, and deep instrumental fusion under the stars.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 mt-2">
               <button
@@ -402,7 +402,7 @@ export default function LandingPage() {
                   </div>
                   <div>
                     <p className="text-[9px] tracking-[0.12em] text-[var(--gold-deep)] font-mono uppercase mb-1">Venue</p>
-                    <p className="text-xs text-[var(--ivory-muted)] font-mono">{event?.venue || 'Deraniyagala, Kegalle'}</p>
+                    <p className="text-xs text-[var(--ivory-muted)] font-mono">{event?.venue || 'Aguruwella, Imbulana, Siri Sena National College'}</p>
                   </div>
                 </div>
               </div>
@@ -429,7 +429,7 @@ export default function LandingPage() {
               className="text-[var(--ivory-muted)] text-sm xl:text-[15px] leading-[1.9] font-light mb-8"
               style={{ textShadow: '0 2px 16px rgba(0,0,0,0.95), 0 1px 4px rgba(0,0,0,0.8)' }}
             >
-              Isimbuwa Festival returns for its 2026 edition in the serene wilderness of Deraniyagala. Experience an evening dedicated to authentic musical artistry, bringing together classical melodies, vocal performances, and deep instrumental fusion under the stars.
+              Isimbuwa Festival returns for its 2026 edition at Siri Sena National College, Aguruwella, Imbulana. Experience an evening dedicated to authentic musical artistry, bringing together classical melodies, vocal performances, and deep instrumental fusion under the stars.
             </p>
             <div className="flex items-center gap-4">
               <button
