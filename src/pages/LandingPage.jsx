@@ -234,8 +234,8 @@ export default function LandingPage() {
     ? new Date(event.date).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
     : '06:00 PM'
 
-  const remaining = event?.remaining_capacity ?? 0
-  const isRegistrationClosed = true || Boolean(event?.is_closed) || remaining === 0
+  const remaining = event?.remaining_capacity ?? 200
+  const isRegistrationClosed = Boolean(event?.is_closed) || (event?.remaining_capacity !== undefined && event.remaining_capacity <= 0)
 
   const getAvailabilityBadge = (rem) => {
     if (rem === 0) return (
@@ -499,33 +499,54 @@ export default function LandingPage() {
               ))}
             </div>
 
-            {/* Notice */}
-            <div className="mb-6 flex gap-3 items-start">
-              <span className="text-red-500/90 text-sm leading-none mt-[2px]">•</span>
-              <p className="text-[13px] text-red-500/90 leading-relaxed">
-                Tickets will be issued strictly to sasnaka sansada members whose names have been registered on the district lists. We will not be responsible for any tickets purchased by individuals whose names are not included in the respective district lists.
-              </p>
-            </div>
-
-            {/* Registrations Closed Notice Card (Replaces Bank Transfer Details) */}
-            <div className="mt-5 mb-5 bg-[var(--surface-3)] border border-amber-500/35 relative overflow-hidden">
-              {/* Top accent bar */}
-              <div className="h-[2px] w-full bg-gradient-to-r from-transparent via-amber-500/60 to-transparent" />
-              <div className="p-5">
-                <p className="text-[9px] tracking-[0.14em] text-amber-400 font-mono uppercase pb-2.5 mb-3 border-b border-[var(--surface-border)] flex items-center gap-2 font-semibold">
-                  <svg className="w-3.5 h-3.5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                  </svg>
-                  REGISTRATIONS HAVE CLOSED
-                </p>
-                <p className="text-xs text-[var(--ivory)] font-medium leading-relaxed mb-2">
-                  Registrations for Isibuwa Festival 2026 are now officially closed.
-                </p>
-                <p className="text-[11px] text-[var(--ivory-muted)]/60 leading-relaxed">
-                  Bank transfer details have been hidden as no further payment transfers or new registrations are being accepted. If you have already completed your transfer and submitted your reference, our team is verifying your payment and your ticket will be issued via email.
-                </p>
+            {/* Payment Details Card / Closed Notice Card */}
+            {isRegistrationClosed ? (
+              <div className="mt-5 mb-5 bg-[var(--surface-3)] border border-amber-500/35 relative overflow-hidden">
+                <div className="h-[2px] w-full bg-gradient-to-r from-transparent via-amber-500/60 to-transparent" />
+                <div className="p-5">
+                  <p className="text-[9px] tracking-[0.14em] text-amber-400 font-mono uppercase pb-2.5 mb-3 border-b border-[var(--surface-border)] flex items-center gap-2 font-semibold">
+                    <svg className="w-3.5 h-3.5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                    </svg>
+                    REGISTRATIONS HAVE CLOSED
+                  </p>
+                  <p className="text-xs text-[var(--ivory)] font-medium leading-relaxed mb-2">
+                    Registrations for Isibuwa Festival 2026 are now officially closed.
+                  </p>
+                  <p className="text-[11px] text-[var(--ivory-muted)]/60 leading-relaxed">
+                    Bank transfer details have been hidden as no further payment transfers or new registrations are being accepted. If you have already completed your transfer and submitted your reference, our team is verifying your payment and your ticket will be issued via email.
+                  </p>
+                </div>
               </div>
-            </div>
+            ) : (
+              <div className="mt-5 mb-5 bg-[var(--surface-3)] border border-[var(--gold-primary)]/25 relative overflow-hidden">
+                <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-[var(--gold-primary)]/50 to-transparent" />
+                <div className="p-5">
+                  <p className="text-[9px] tracking-[0.14em] text-[var(--gold-primary)] font-mono uppercase pb-3 mb-3 border-b border-[var(--surface-border)] flex items-center gap-2">
+                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" /></svg>
+                    Bank Transfer Details
+                  </p>
+                  <div className="space-y-2.5 text-xs">
+                    <div className="flex justify-between items-start gap-3">
+                      <span className="text-[var(--ivory-muted)]/50 flex-shrink-0">Account Name</span>
+                      <span className="text-[var(--ivory)] font-semibold text-right">Sasnaka Sansada</span>
+                    </div>
+                    <div className="flex justify-between items-start gap-3">
+                      <span className="text-[var(--ivory-muted)]/50 flex-shrink-0">Account No.</span>
+                      <span className="text-[var(--gold-bright)] font-bold font-mono tracking-wider text-right">8020003825</span>
+                    </div>
+                    <div className="flex justify-between items-start gap-3">
+                      <span className="text-[var(--ivory-muted)]/50 flex-shrink-0">Bank</span>
+                      <span className="text-[var(--ivory)] text-right">Commercial Bank PLC</span>
+                    </div>
+                    <div className="flex justify-between items-start gap-3">
+                      <span className="text-[var(--ivory-muted)]/50 flex-shrink-0">Branch</span>
+                      <span className="text-[var(--ivory)] text-right">City Office</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
 
             <p className="text-[11px] text-[var(--ivory-muted)]/35 leading-relaxed">
               * Our administration team will verify the payment reference within 48 hours and issue your unique check-in code directly to your email.
