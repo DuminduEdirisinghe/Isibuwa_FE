@@ -225,7 +225,9 @@ export default function LandingPage() {
       setFile(null)
     } catch (err) {
       const statusCode = err.response?.status
-      const msg = err.response?.data?.error || 'Something went wrong. Please try again.'
+      const detailMsg = err.response?.data?.details?.[0]?.message
+      const serverMsg = err.response?.data?.error
+      const msg = detailMsg || serverMsg || 'Something went wrong. Please check your submission and try again.'
       if (statusCode === 409) setBookingStatus('full')
       else { setBookingStatus('error'); setErrorMsg(msg) }
     }
