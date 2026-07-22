@@ -181,8 +181,13 @@ export default function LandingPage() {
 
   // ── File Upload Handlers ─────────────────────────────────────
   const validateFile = (f) => {
-    const accepted = ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf']
-    if (!accepted.includes(f.type)) return 'Only JPEG, PNG, and PDF files are accepted'
+    const accepted = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/heic', 'image/heif', 'image/pjpeg', 'application/pdf', 'application/octet-stream']
+    const ext = (f.name.split('.').pop() || '').toLowerCase()
+    const acceptedExts = ['jpg', 'jpeg', 'png', 'pdf', 'webp', 'heic', 'heif']
+
+    if (!accepted.includes(f.type) && !acceptedExts.includes(ext)) {
+      return 'Only JPEG, PNG, WEBP, HEIC, and PDF files are accepted'
+    }
     if (f.size > 5 * 1024 * 1024) return 'File size must not exceed 5MB'
     return null
   }
@@ -771,7 +776,7 @@ export default function LandingPage() {
                                 : 'border-[var(--gold-deep)]/60 bg-[var(--surface-3)] hover:border-[var(--gold-primary)]/60 cursor-pointer'
                       ].join(' ')}
                     >
-                      <input ref={fileInputRef} type="file" accept=".jpg,.jpeg,.png,.pdf"
+                      <input ref={fileInputRef} type="file" accept=".jpg,.jpeg,.png,.pdf,.webp,.heic,.heif,image/*"
                         disabled={isRegistrationClosed}
                         onChange={e => { const f = e.target.files[0]; if (f) handleFileChange(f) }}
                         className="hidden"
