@@ -241,14 +241,14 @@ export default function LandingPage() {
     ? new Date(event.date).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
     : '06:00 PM'
 
-  const remaining = event?.remaining_capacity ?? 200
-  const isRegistrationClosed = Boolean(event?.is_closed) || (event?.remaining_capacity !== undefined && event.remaining_capacity <= 0)
+  const remaining = event?.remaining_capacity ?? 0
+  const isRegistrationClosed = true || Boolean(event?.is_closed) || (event?.remaining_capacity !== undefined && event.remaining_capacity <= 0)
 
   const getAvailabilityBadge = (rem) => {
-    if (rem === 0) return (
-      <span className="inline-flex items-center gap-2 px-3 py-1.5 text-[11px] uppercase tracking-[0.1em] font-semibold border border-slate-500/30 bg-slate-500/10 text-slate-400">
-        <span className="w-1.5 h-1.5 rounded-full bg-slate-500 flex-shrink-0" />
-        Sold Out
+    if (isRegistrationClosed || rem === 0) return (
+      <span className="inline-flex items-center gap-2 px-3 py-1.5 text-[11px] uppercase tracking-[0.1em] font-semibold border border-red-500/40 bg-red-500/10 text-red-400">
+        <span className="w-1.5 h-1.5 rounded-full bg-red-500 flex-shrink-0 animate-pulse" />
+        Registration Closed
       </span>
     )
     if (rem <= 30) return (
@@ -283,9 +283,9 @@ export default function LandingPage() {
           </div>
           <button
             onClick={scrollToBooking}
-            className="px-5 py-2 text-[11px] font-semibold uppercase tracking-[0.12em] border border-[var(--gold-primary)] text-[var(--gold-bright)] bg-transparent hover:bg-[var(--gold-primary)] hover:text-[var(--surface-1)] active:scale-[0.97] transition-all duration-200"
+            className="px-5 py-2 text-[11px] font-semibold uppercase tracking-[0.12em] border border-red-500/40 text-red-300 bg-red-950/40 hover:bg-red-900/60 active:scale-[0.97] transition-all duration-200"
           >
-            Get Ticket
+            Portal Closed
           </button>
         </div>
       </header>
@@ -346,9 +346,13 @@ export default function LandingPage() {
             <div className="flex flex-col sm:flex-row gap-3 mt-2">
               <button
                 onClick={scrollToBooking}
-                className="w-full sm:w-auto px-8 py-4 text-[11px] font-bold uppercase tracking-[0.14em] bg-[var(--gold-primary)] hover:bg-[var(--gold-bright)] text-[var(--surface-1)] active:scale-[0.98] transition-all"
+                className={`w-full sm:w-auto px-8 py-4 text-[11px] font-bold uppercase tracking-[0.14em] transition-all ${
+                  isRegistrationClosed
+                    ? 'bg-red-950/80 border border-red-500/40 text-red-300 hover:bg-red-900/60'
+                    : 'bg-[var(--gold-primary)] hover:bg-[var(--gold-bright)] text-[var(--surface-1)] active:scale-[0.98]'
+                }`}
               >
-                Secure Ticket
+                {isRegistrationClosed ? 'Portal Closed' : 'Secure Ticket'}
               </button>
               <button
                 onClick={() => document.getElementById('lineup')?.scrollIntoView({ behavior: 'smooth' })}
@@ -441,9 +445,13 @@ export default function LandingPage() {
             <div className="flex items-center gap-4">
               <button
                 onClick={scrollToBooking}
-                className="px-8 py-3.5 text-[11px] font-bold uppercase tracking-[0.14em] bg-[var(--gold-primary)] hover:bg-[var(--gold-bright)] text-[var(--surface-1)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-200"
+                className={`px-8 py-3.5 text-[11px] font-bold uppercase tracking-[0.14em] transition-all duration-200 ${
+                  isRegistrationClosed
+                    ? 'bg-red-950/80 border border-red-500/40 text-red-300 hover:bg-red-900/60'
+                    : 'bg-[var(--gold-primary)] hover:bg-[var(--gold-bright)] text-[var(--surface-1)] hover:scale-[1.02] active:scale-[0.98]'
+                }`}
               >
-                Secure Ticket
+                {isRegistrationClosed ? 'Portal Closed' : 'Secure Ticket'}
               </button>
               <button
                 onClick={() => document.getElementById('lineup')?.scrollIntoView({ behavior: 'smooth' })}
